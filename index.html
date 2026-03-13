@@ -219,25 +219,7 @@
   .cap-name { font-size:.9rem; font-weight:600; margin-bottom:.25rem; }
   .cap-level { font-size:.8rem; }
 
-  /* ── INTERACTIVE QUIZ ── */
-  .quiz-container {
-    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:2rem;
-  }
-  .quiz-question { font-size:1.1rem; font-weight:600; margin-bottom:1.5rem; }
-  .quiz-options { display:flex; flex-direction:column; gap:.75rem; }
-  .quiz-option {
-    padding:1rem 1.5rem; border:1px solid var(--border); border-radius:10px;
-    cursor:pointer; transition:all .2s; background:var(--surface2);
-  }
-  .quiz-option:hover:not(.disabled) { border-color:var(--accent); background:rgba(99,102,241,.1); }
-  .quiz-option.correct { border-color:var(--accent4); background:rgba(16,185,129,.1); color:#6ee7b7; }
-  .quiz-option.wrong { border-color:var(--accent6); background:rgba(239,68,68,.1); color:#fca5a5; }
-  .quiz-option.disabled { cursor:default; }
-  .quiz-feedback { margin-top:1.5rem; padding:1rem; border-radius:10px; display:none; }
-  .quiz-feedback.show { display:block; }
-  .quiz-feedback.good { background:rgba(16,185,129,.1); color:#6ee7b7; border:1px solid var(--accent4); }
-  .quiz-feedback.bad { background:rgba(239,68,68,.1); color:#fca5a5; border:1px solid var(--accent6); }
-  .quiz-nav { display:flex; gap:1rem; margin-top:1.5rem; justify-content:space-between; align-items:center; }
+  /* ── BUTTONS ── */
   .btn {
     padding:.6rem 1.4rem; border-radius:8px; border:none; cursor:pointer;
     font-size:.9rem; font-weight:600; transition:all .2s;
@@ -246,7 +228,57 @@
   .btn-primary:hover { background:#4f46e5; }
   .btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--border); }
   .btn-ghost:hover { color:var(--text); border-color:var(--text); }
-  .quiz-score { font-size:.9rem; color:var(--muted); }
+
+  /* ── TOOLING SECTIE ── */
+  .profession-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: .75rem;
+    margin-bottom: 2rem;
+  }
+  .profession-btn {
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    padding: 1rem .75rem; border: 1px solid var(--border); border-radius: 12px;
+    background: var(--surface); cursor: pointer; transition: all .2s;
+    text-align: center;
+  }
+  .profession-btn:hover { border-color: var(--accent); background: rgba(99,102,241,.08); }
+  .profession-btn.active { border-color: var(--accent); background: rgba(99,102,241,.15); box-shadow: 0 0 20px var(--glow); }
+  .profession-btn .prof-icon { font-size: 1.8rem; }
+  .profession-btn .prof-label { font-size: .8rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .profession-btn.active .prof-label { color: #a5b4fc; }
+
+  .tools-panel {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 2rem; min-height: 300px;
+  }
+  .tools-panel-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .tools-panel-icon { font-size: 2.5rem; }
+  .tools-panel-title { font-size: 1.3rem; font-weight: 800; }
+  .tools-panel-subtitle { color: var(--muted); font-size: .9rem; }
+  .tools-panel-tip {
+    background: rgba(99,102,241,.08); border: 1px solid rgba(99,102,241,.2);
+    border-radius: 10px; padding: .85rem 1.1rem; margin-bottom: 1.5rem;
+    font-size: .88rem; color: #a5b4fc; line-height: 1.6;
+  }
+  .tools-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1rem; }
+  .tool-card {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.1rem 1.25rem; display: flex; gap: 1rem; align-items: flex-start;
+    transition: all .2s;
+  }
+  .tool-card:hover { border-color: var(--accent); transform: translateX(3px); }
+  .tool-emoji { font-size: 1.6rem; flex-shrink: 0; margin-top: .1rem; }
+  .tool-info {}
+  .tool-name { font-weight: 700; font-size: .95rem; margin-bottom: .25rem; }
+  .tool-desc { color: var(--muted); font-size: .85rem; line-height: 1.5; }
+  .tool-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .5rem; }
+  .tool-tag {
+    font-size: .7rem; padding: .15rem .6rem; border-radius: 999px;
+    background: rgba(99,102,241,.12); color: #a5b4fc; font-weight: 600;
+  }
+  .tool-tag.free { background: rgba(16,185,129,.12); color: #6ee7b7; }
+  .tool-tag.paid { background: rgba(245,158,11,.12); color: #fcd34d; }
 
   /* ── IMPACT SECTORS ── */
   .sector-card {
@@ -355,7 +387,7 @@
     <a href="#capabilities">Capaciteiten</a>
     <a href="#impact">Impact</a>
     <a href="#risks">Risico's</a>
-    <a href="#quiz">Quiz</a>
+    <a href="#tooling">Tooling</a>
   </div>
 </nav>
 
@@ -789,22 +821,18 @@
   </div>
 </section>
 
-<!-- Quiz -->
-<section id="quiz">
+<!-- Tooling per beroepsgroep -->
+<section id="tooling">
   <div class="reveal">
-    <div class="section-label">Interactief</div>
-    <h2 class="section-title">Test Je Kennis</h2>
-    <p class="section-desc">Hoe goed ken jij de stand van AI? Beantwoord deze vragen en ontdek het!</p>
+    <div class="section-label">Productiviteit</div>
+    <h2 class="section-title">AI-tools per Beroepsgroep</h2>
+    <p class="section-desc">Selecteer jouw beroep om te ontdekken welke AI-tools jouw dagelijkse werk direct productiever maken.</p>
   </div>
-  <div class="quiz-container reveal" id="quizContainer">
-    <div class="quiz-question" id="quizQuestion"></div>
-    <div class="quiz-options" id="quizOptions"></div>
-    <div class="quiz-feedback" id="quizFeedback"></div>
-    <div class="quiz-nav">
-      <div class="quiz-score" id="quizScore">Vraag 1 van 7</div>
-      <div style="display:flex;gap:.75rem;">
-        <button class="btn btn-primary" id="quizNextBtn" onclick="nextQuestion()" style="display:none;">Volgende →</button>
-      </div>
+  <div class="profession-grid reveal" id="professionGrid"></div>
+  <div class="tools-panel reveal" id="toolsPanel">
+    <div style="text-align:center;padding:2rem;color:var(--muted);">
+      <div style="font-size:3rem;margin-bottom:1rem;">👆</div>
+      Selecteer een beroepsgroep hierboven om de bijbehorende AI-tools te zien.
     </div>
   </div>
 </section>
@@ -845,28 +873,148 @@ const sectors = [
   { icon:'🎨', title:'Creative Industries', subtitle:'Kunst, Media & Entertainment', desc:'Adobe Firefly, Runway Gen-3 en Suno revolutioneren content creatie. Hollywood gebruikt AI voor VFX, scripts en post-productie. Auteursrecht en creatief eigendom zijn heet debat.', metric:'AI-gebruik bij creatieven', pct:78, color:'#ef4444' },
 ];
 
-const quizData = [
-  { q:'Hoeveel parameters heeft het grootste bekende taalmodel (2025-2026)?', opts:['175 miljard','1 biljoen+','500 miljard','50 miljard'], correct:1, explain:'Frontier-modellen zoals GPT-4 en zijn opvolgers worden geschat op meer dan 1 biljoen parameters, hoewel exacte cijfers geheim blijven.' },
-  { q:'Welke architectuur ligt aan de basis van vrijwel alle moderne taalmodellen?', opts:['Recurrent Neural Network (RNN)','Convolutional Network (CNN)','Transformer (Attention)','Generative Adversarial Network (GAN)'], correct:2, explain:'"Attention is All You Need" (Google, 2017) introduceerde de Transformer, de basis van GPT, Claude, Gemini en vrijwel alle andere moderne AI-modellen.' },
-  { q:'Welk bedrijf maakte ChatGPT?', opts:['Google','Meta','Microsoft','OpenAI'], correct:3, explain:'ChatGPT werd in november 2022 gelanceerd door OpenAI. Microsoft investeerde 13 miljard dollar in OpenAI en integreert AI in Office en Bing.' },
-  { q:'Wat is RLHF?', opts:['Een programmeertaal voor AI','Reinforcement Learning from Human Feedback','Remote Learning for High-frequency trading','Real-time Language Handling Framework'], correct:1, explain:'RLHF is de techniek waarbij mensen AI-outputs beoordelen om het model te trainen nuttiger en veiliger te zijn. Het is de kern van ChatGPT en Claude.' },
-  { q:'Wat heeft AlphaFold van DeepMind opgelost?', opts:['Schaken op menselijk niveau','Het eiwitvouwingsprobleem','Autonome auto\'s','Klimaatmodellering'], correct:1, explain:'AlphaFold loste het 50 jaar oude eiwitvouwingsprobleem op — het voorspellen van 3D-structuur van eiwitten op basis van aminozuursequenties. Dit versnelt medicijnontwikkeling enorm.' },
-  { q:'Welke wetgeving is de eerste uitgebreide AI-regelgeving ter wereld?', opts:['US AI Safety Act','EU AI Act','UK Online Safety Bill','China AI Regulation 2023'], correct:1, explain:'De EU AI Act, van kracht in 2024-2026, is de eerste omvattende AI-wetgeving. Systemen worden ingedeeld naar risiconiveau met bijbehorende verplichtingen.' },
-  { q:'Hoeveel gebruikers bereikte ChatGPT in 2 maanden — het snelst ooit voor een consumentenapp?', opts:['10 miljoen','50 miljoen','100 miljoen','500 miljoen'], correct:2, explain:'ChatGPT bereikte 100 miljoen gebruikers in slechts 2 maanden. Ter vergelijking: Instagram deed er 2,5 jaar over, TikTok 9 maanden.' },
+const professions = [
+  {
+    id:'developer', icon:'💻', label:'Ontwikkelaar / IT',
+    subtitle:'Software Engineers, DevOps, Architects',
+    tip:'AI-assistenten schrijven al 30-50% van de code bij vroege adopters. De grootste winst zit in boilerplate, tests en documentatie.',
+    tools:[
+      { emoji:'🤖', name:'GitHub Copilot', desc:'AI die direct in VS Code / JetBrains code aanvult, functies genereert en bugs oplegt op basis van context.', tags:['Code','Betaald'] },
+      { emoji:'⚡', name:'Cursor', desc:'AI-first code editor gebouwd op VS Code. Begrijpt je volledige codebase en kan multi-file refactors uitvoeren.', tags:['Code','Betaald'] },
+      { emoji:'🧠', name:'Claude / ChatGPT', desc:'Ideaal voor architectuurvragen, code reviews, debugging en het uitleggen van complexe concepten.', tags:['Analyse','Freemium'] },
+      { emoji:'🕵️', name:'Codeium', desc:'Gratis alternatief voor Copilot. Ondersteunt 70+ talen en integreert met vrijwel elke IDE.', tags:['Code','Gratis'] },
+      { emoji:'🤖', name:'Devin (Cognition)', desc:'Autonome AI software-engineer die zelfstandig taken uitvoert: van issue naar werkende PR.', tags:['Agent','Betaald'] },
+      { emoji:'🔍', name:'Tabnine', desc:'Privacy-first AI code-assistent die ook on-premise draait. Populair in enterprise omgevingen.', tags:['Code','Betaald'] },
+    ]
+  },
+  {
+    id:'marketing', icon:'📣', label:'Marketing & Comm.',
+    subtitle:'Marketeers, Copywriters, PR-professionals',
+    tip:'AI bespaart marketeers gemiddeld 5 uur per week op het schrijven van content. De kracht zit in het schalen van gepersonaliseerde boodschappen.',
+    tools:[
+      { emoji:'✍️', name:'Jasper AI', desc:'Marketingteksten, advertentiecopy en e-mails schrijven op merkstijl. Integreert met HubSpot en Salesforce.', tags:['Tekst','Betaald'] },
+      { emoji:'🎨', name:'Canva AI (Magic Studio)', desc:'Ontwerp met AI: afbeeldingen genereren, achtergronden verwijderen, presentaties auto-designen.', tags:['Design','Freemium'] },
+      { emoji:'📱', name:'Hootsuite OwlyWriter AI', desc:'Social media posts genereren, plannen en analyseren. Geeft AI-gebaseerde aanbevelingen voor best postingtijden.', tags:['Social','Betaald'] },
+      { emoji:'🔗', name:'HubSpot AI', desc:'CRM met ingebouwde AI voor e-mailpersonalisatie, leadscoring en content-aanbevelingen.', tags:['CRM','Betaald'] },
+      { emoji:'🖼️', name:'Adobe Firefly', desc:'Professionele AI-beeldgeneratie geïntegreerd in Photoshop en Illustrator. Commercieel veilig gebruik.', tags:['Design','Betaald'] },
+      { emoji:'📊', name:'Semrush AI', desc:'AI-gestuurde SEO-analyse, contentstrategie en concurrentieonderzoek in één platform.', tags:['SEO','Betaald'] },
+    ]
+  },
+  {
+    id:'manager', icon:'📋', label:'Manager / Directie',
+    subtitle:'Projectmanagers, Leidinggevenden, C-suite',
+    tip:'Microsoft onderzoek: Copilot-gebruikers besparen gemiddeld 1,2 uur per dag op vergaderingen, e-mail en rapportage.',
+    tools:[
+      { emoji:'🏢', name:'Microsoft 365 Copilot', desc:'AI in Word, Excel, PowerPoint, Outlook en Teams. Samenvat vergaderingen, stelt e-mails op, maakt presentaties.', tags:['Productiviteit','Betaald'] },
+      { emoji:'📝', name:'Notion AI', desc:'Aantekeningen samenvatten, actiepunten extraheren, projectdocumentatie opstellen in je bestaande werkruimte.', tags:['Notities','Betaald'] },
+      { emoji:'🎙️', name:'Otter.ai', desc:'Transcribeert vergaderingen real-time, herkent sprekers en maakt automatisch samenvattingen met actiepunten.', tags:['Meetings','Freemium'] },
+      { emoji:'🔥', name:'Fireflies.ai', desc:'AI-notulist voor Google Meet, Zoom en Teams. Doorzoekbare transcripties en CRM-integraties.', tags:['Meetings','Freemium'] },
+      { emoji:'📈', name:'Gamma AI', desc:'Presentaties en rapporten maken via een prompt. Levert direct professionele slides op.', tags:['Presentaties','Freemium'] },
+      { emoji:'🤝', name:'Reclaim AI', desc:'AI plant je agenda automatisch: beschermt focustijd, plant 1-op-1s en herplant bij conflicten.', tags:['Agenda','Betaald'] },
+    ]
+  },
+  {
+    id:'legal', icon:'⚖️', label:'Juridisch',
+    subtitle:'Advocaten, Juristen, Compliance-officers',
+    tip:'Contract-review dat handmatig 4 uur kostte, duurt met AI-tools 10-20 minuten. Juridisch redeneren en eindverantwoordelijkheid blijven menselijk.',
+    tools:[
+      { emoji:'⚖️', name:'Harvey AI', desc:'Juridisch AI-platform voor contract-analyse, due diligence en juridisch onderzoek. Gebruikt door toonaangevende kantoren.', tags:['Onderzoek','Betaald'] },
+      { emoji:'📁', name:'Clio Duo', desc:'AI-assistent in het Clio praktijkbeheer-platform. Helpt bij tijdregistratie, correspondentie en zaakbeheer.', tags:['Beheer','Betaald'] },
+      { emoji:'🔍', name:'Lexis+ AI', desc:'Juridisch onderzoek via LexisNexis met generatieve AI. Samenvatten van jurisprudentie en wetgeving.', tags:['Research','Betaald'] },
+      { emoji:'📄', name:'Kira Systems', desc:'Gespecialiseerd in contractanalyse: extraheert clausules, herkent risico\'s en vergelijkt met standaarden.', tags:['Contracten','Betaald'] },
+      { emoji:'🧠', name:'Claude (Anthropic)', desc:'Sterk in lange documentanalyse (200k tokens). Geschikt voor het doorzoeken van grote contractdossiers.', tags:['Analyse','Freemium'] },
+      { emoji:'📋', name:'Spellbook (Rally)', desc:'AI-contract-drafting direct in Word. Stelt clausules voor, signaleert ontbrekende bepalingen.', tags:['Contracten','Betaald'] },
+    ]
+  },
+  {
+    id:'medical', icon:'🏥', label:'Zorg & Medisch',
+    subtitle:'Artsen, Verpleegkundigen, Zorgprofessionals',
+    tip:'AI vermindert administratieve last voor artsen met gemiddeld 30%. Nuance DAX wordt al gebruikt door 500+ ziekenhuizen wereldwijd.',
+    tools:[
+      { emoji:'🎙️', name:'Nuance DAX Copilot', desc:'Transcribeert arts-patiëntgesprekken en genereert automatisch SOAP-notities in het EPD. Goedgekeurd voor klinisch gebruik.', tags:['Documentatie','Betaald'] },
+      { emoji:'🩺', name:'Glass Health', desc:'AI-ondersteuning bij klinische beslissingen: differentiaaldiagnose, behandelplannen en medicatiecontrole.', tags:['Diagnose','Freemium'] },
+      { emoji:'💊', name:'Nabla Copilot', desc:'Real-time AI-assistent die consult transcribeert, samenvatting maakt en medicatie/verwijzingen voorstelt.', tags:['Consult','Betaald'] },
+      { emoji:'🔬', name:'PathAI', desc:'AI-pathologie platform dat weefselanalyse ondersteunt voor kankerdiagnostiek met hoge nauwkeurigheid.', tags:['Diagnostiek','Betaald'] },
+      { emoji:'📊', name:'Epic + AI (Cognitive)', desc:'Het meest gebruikte EPD integreert AI voor predictieve scores, samenvatting en klinische beslissingsondersteuning.', tags:['EPD','Betaald'] },
+      { emoji:'🧬', name:'AlphaFold 3', desc:'Voorspelt eiwitstructuren en interacties. Essentieel voor onderzoekers in drug discovery en moleculaire biologie.', tags:['Research','Gratis'] },
+    ]
+  },
+  {
+    id:'finance', icon:'💰', label:'Financieel / Accountancy',
+    subtitle:'Accountants, Analisten, Financieel Adviseurs',
+    tip:'AI-gestuurde boekhoudtools verminderen handmatige datainvoer met 80%. Fraudedetectie verbeterde sectorbreed met 40% door ML-modellen.',
+    tools:[
+      { emoji:'📊', name:'Bloomberg Terminal + AI', desc:'Bloomberg GPT integreert financieel taalmodel voor marktsamenvatting, nieuwsanalyse en rapportgeneratie.', tags:['Markten','Betaald'] },
+      { emoji:'🧾', name:'Vic.ai', desc:'Autonome AI voor crediteurenbeheer: verwerkt facturen, matcht orders en boekt automatisch.', tags:['Boekhouden','Betaald'] },
+      { emoji:'📈', name:'Julius AI', desc:'Chat met je financiële data: Excel/CSV uploaden en analyses, grafieken en inzichten opvragen in gewone taal.', tags:['Data-analyse','Freemium'] },
+      { emoji:'🔍', name:'Kira Systems', desc:'AI-contractanalyse voor due diligence in M&A-processen. Extraheert financiële clausules en verplichtingen.', tags:['Due diligence','Betaald'] },
+      { emoji:'🤖', name:'Planful Predict', desc:'AI-gestuurde financiële planning en forecasting. Integreert met ERP-systemen voor real-time voorspellingen.', tags:['FP&A','Betaald'] },
+      { emoji:'💬', name:'Perplexity AI', desc:'AI-zoekmachine voor real-time financieel nieuws, bedrijfsanalyse en marktonderzoek met bronvermelding.', tags:['Research','Freemium'] },
+    ]
+  },
+  {
+    id:'hr', icon:'👥', label:'HR & Recruitment',
+    subtitle:'HR-managers, Recruiters, L&D-professionals',
+    tip:'AI-screening tools kunnen CV-beoordeling 10x versnellen. Let op bias-risico\'s: valideer altijd op eerlijkheid en diversiteit.',
+    tools:[
+      { emoji:'🔍', name:'LinkedIn Recruiter + AI', desc:'AI-aanbevelingen voor kandidaten, automatisch berichten personaliseren en talentpool-analyse.', tags:['Werving','Betaald'] },
+      { emoji:'✍️', name:'Textio', desc:'AI verbetert vacatureteksten voor inclusiviteit en bereik. Voorspelt welke taal meer diverse kandidaten trekt.', tags:['Werving','Betaald'] },
+      { emoji:'🤖', name:'Paradox (Olivia)', desc:'Conversationele AI die kandidaatgesprekken voert, vragen beantwoordt en interviews inplant via chat.', tags:['Chatbot','Betaald'] },
+      { emoji:'🏢', name:'Workday AI', desc:'HCM-platform met AI voor talentprognoses, verloopcijfers voorspellen en persoonlijke leertrajecten.', tags:['HRM','Betaald'] },
+      { emoji:'📚', name:'360Learning AI', desc:'AI-leersysteem dat gepersonaliseerde leertrajecten maakt op basis van rol, vaardigheden en leerstijl.', tags:['L&D','Betaald'] },
+      { emoji:'🧠', name:'Claude / ChatGPT', desc:'Functieprofielen schrijven, onboardingdocumenten opstellen, beleid samenvatten en vragenlijsten genereren.', tags:['Tekst','Freemium'] },
+    ]
+  },
+  {
+    id:'education', icon:'🎓', label:'Onderwijs & Training',
+    subtitle:'Docenten, Trainers, Onderwijsontwikkelaars',
+    tip:'UNESCO: 60% van docenten wereldwijd gebruikt al AI voor lesvoorbereiding. AI-tutors verhogen leerresultaten met gemiddeld 20%.',
+    tools:[
+      { emoji:'🧑‍🏫', name:'Khanmigo (Khan Academy)', desc:'Persoonlijke AI-tutor voor leerlingen en lesplanningsassistent voor docenten. Socratische aanpak: geeft hints, geen antwoorden.', tags:['Tutoring','Gratis'] },
+      { emoji:'🎬', name:'Synthesia', desc:'Maak professionele AI-video\'s met een avatar en gesproken tekst. Ideaal voor e-learningmodules.', tags:['Video','Betaald'] },
+      { emoji:'📝', name:'Diffit', desc:'Differentieert lesmateriaal automatisch op leesniveau. Past teksten aan voor verschillende leergroepen.', tags:['Differentiatie','Freemium'] },
+      { emoji:'🎯', name:'MagicSchool AI', desc:'All-in-one AI voor docenten: lesplannen, rubrics, differentiatie, communicatie met ouders en meer.', tags:['Lesvoorbereiding','Freemium'] },
+      { emoji:'✍️', name:'Grammarly', desc:'AI schrijfassistent die grammar, stijl en toon verbetert. Handig bij het geven van schrijffeedback.', tags:['Schrijven','Freemium'] },
+      { emoji:'🔊', name:'ElevenLabs', desc:'Tekst omzetten naar realistische spraak in 29 talen. Perfect voor het maken van audio-leerinhoud.', tags:['Audio','Freemium'] },
+    ]
+  },
+  {
+    id:'creative', icon:'🎨', label:'Design & Creatief',
+    subtitle:'Designers, Videografen, Content Creators',
+    tip:'Adobe-onderzoek: creatieve professionals die AI-tools gebruiken produceren 2-3x meer content in dezelfde tijd. AI vervangt niet de visie, maar versnelt de uitvoering.',
+    tools:[
+      { emoji:'🖼️', name:'Midjourney v7', desc:'De standaard voor kwalitatieve AI-beeldgeneratie. Prachtige artistieke stijlen via Discord of de eigen webapp.', tags:['Beeld','Betaald'] },
+      { emoji:'✨', name:'Adobe Firefly', desc:'Commercieel veilige AI-beeldgeneratie in Photoshop, Illustrator en Express. Getraind op gelicentieerde content.', tags:['Beeld','Betaald'] },
+      { emoji:'🎬', name:'Runway Gen-3', desc:'AI videobewerking en -generatie. Tekst-naar-video, in-painting en motion brush voor professionele video\'s.', tags:['Video','Betaald'] },
+      { emoji:'🎵', name:'Suno AI', desc:'Genereert complete nummers met vocals en instrumentatie vanuit een tekstprompt. Volledig muziekproductie.', tags:['Audio','Freemium'] },
+      { emoji:'📐', name:'Canva AI (Magic Studio)', desc:'Volledige ontwerpworkflow met AI: genereren, aanpassen, animeren en publiceren in één tool.', tags:['Design','Freemium'] },
+      { emoji:'🗣️', name:'ElevenLabs', desc:'Meest realistische AI-stemgeneratie. Stemklonen, voice-overs en audio in 29 talen voor podcasts en video.', tags:['Audio','Freemium'] },
+    ]
+  },
+  {
+    id:'consultant', icon:'📊', label:'Consultant & Analist',
+    subtitle:'Consultants, Data-analisten, Strategen',
+    tip:'McKinsey: consultants die GenAI gebruiken leveren 40% sneller analyses en rapporten van hogere kwaliteit. Cruciaal voordeel: bronkritisch blijven.',
+    tools:[
+      { emoji:'🔍', name:'Perplexity AI', desc:'AI-zoekmachine met bronvermelding. Ideaal voor snel marktonderzoek, concurrentieanalyse en feitenchecks.', tags:['Research','Freemium'] },
+      { emoji:'📊', name:'Julius AI', desc:'Conversationele data-analyse: upload Excel/CSV en stel vragen in gewone taal. Maakt grafieken en inzichten.', tags:['Data','Freemium'] },
+      { emoji:'🎯', name:'Consensus', desc:'AI-zoekmachine voor wetenschappelijke literatuur. Vindt en synthetiseert peer-reviewed bewijs voor claims.', tags:['Research','Freemium'] },
+      { emoji:'📝', name:'Notion AI', desc:'Onderzoekssamenvattingen, rapportstructuren en aantekeningen organiseren in je bestaande kennisbase.', tags:['Notities','Betaald'] },
+      { emoji:'💬', name:'Claude (Anthropic)', desc:'Uitstekend voor het analyseren van lange documenten, strategische denkoefeningen en het schrijven van rapporten.', tags:['Analyse','Freemium'] },
+      { emoji:'📈', name:'Tableau + Einstein AI', desc:'Business intelligence-platform met ingebouwde AI voor automatische insights, prognoses en NL-queries op data.', tags:['BI','Betaald'] },
+    ]
+  },
 ];
 
-// ── INIT ──────────────────────────────────────────────────────────────────
-let quizIndex = 0;
-let quizScore = 0;
-let answered = false;
 
+// ── INIT ──────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   createFloatingDots();
   initNeuralCanvas();
   renderModels('all');
   renderBenchmarkChart();
   renderSectors();
-  loadQuizQuestion();
+  renderProfessionGrid();
   initScrollReveal();
   initCounters();
 });
@@ -1043,72 +1191,50 @@ function toggleAccordion(btn) {
   body.classList.toggle('open');
 }
 
-// ── QUIZ ──────────────────────────────────────────────────────────────────
-function loadQuizQuestion() {
-  answered = false;
-  const q = quizData[quizIndex];
-  document.getElementById('quizQuestion').textContent = `${quizIndex+1}. ${q.q}`;
-  document.getElementById('quizOptions').innerHTML = q.opts.map((o, i) => `
-    <div class="quiz-option" onclick="answerQuiz(this, ${i})">${o}</div>
+// ── TOOLING PER BEROEP ────────────────────────────────────────────────────
+function renderProfessionGrid() {
+  const grid = document.getElementById('professionGrid');
+  grid.innerHTML = professions.map(p => `
+    <button class="profession-btn" onclick="showProfession('${p.id}')" id="prof-${p.id}">
+      <span class="prof-icon">${p.icon}</span>
+      <span class="prof-label">${p.label}</span>
+    </button>
   `).join('');
-  document.getElementById('quizFeedback').className = 'quiz-feedback';
-  document.getElementById('quizFeedback').textContent = '';
-  document.getElementById('quizNextBtn').style.display = 'none';
-  document.getElementById('quizScore').textContent = `Vraag ${quizIndex+1} van ${quizData.length}`;
 }
 
-function answerQuiz(el, idx) {
-  if (answered) return;
-  answered = true;
-  const q = quizData[quizIndex];
-  const opts = document.querySelectorAll('.quiz-option');
-  opts.forEach(o => o.classList.add('disabled'));
-  opts[q.correct].classList.add('correct');
-  if (idx !== q.correct) el.classList.add('wrong');
-  else quizScore++;
+function showProfession(id) {
+  const p = professions.find(x => x.id === id);
+  if (!p) return;
 
-  const fb = document.getElementById('quizFeedback');
-  fb.textContent = (idx === q.correct ? '✅ Correct! ' : '❌ Niet correct. ') + q.explain;
-  fb.className = `quiz-feedback show ${idx === q.correct ? 'good' : 'bad'}`;
-  document.getElementById('quizNextBtn').style.display = 'block';
-  if (quizIndex === quizData.length - 1) {
-    document.getElementById('quizNextBtn').textContent = 'Resultaat bekijken';
-  }
-}
+  document.querySelectorAll('.profession-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('prof-' + id).classList.add('active');
 
-function nextQuestion() {
-  quizIndex++;
-  if (quizIndex >= quizData.length) {
-    const pct = Math.round((quizScore / quizData.length) * 100);
-    const emoji = pct >= 80 ? '🏆' : pct >= 50 ? '👍' : '📚';
-    document.getElementById('quizContainer').innerHTML = `
-      <div style="text-align:center;padding:2rem;">
-        <div style="font-size:4rem;margin-bottom:1rem">${emoji}</div>
-        <h3 style="font-size:1.8rem;margin-bottom:.5rem">${quizScore} / ${quizData.length} correct</h3>
-        <p style="color:var(--muted);margin-bottom:2rem">${pct >= 80 ? 'Uitstekend! Je weet veel over AI.' : pct >= 50 ? 'Goed gedaan! Je kent de basis.' : 'Interessant! Veel te ontdekken over AI.'}</p>
-        <div style="font-size:3rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${pct}%</div>
-        <button class="btn btn-primary" style="margin-top:2rem;" onclick="resetQuiz()">Opnieuw proberen</button>
-      </div>
-    `;
-    return;
-  }
-  loadQuizQuestion();
-}
+  const tagClass = t => t === 'Gratis' ? 'free' : t === 'Betaald' ? 'paid' : '';
 
-function resetQuiz() {
-  quizIndex = 0; quizScore = 0;
-  document.getElementById('quizContainer').innerHTML = `
-    <div class="quiz-question" id="quizQuestion"></div>
-    <div class="quiz-options" id="quizOptions"></div>
-    <div class="quiz-feedback" id="quizFeedback"></div>
-    <div class="quiz-nav">
-      <div class="quiz-score" id="quizScore">Vraag 1 van 7</div>
-      <div style="display:flex;gap:.75rem;">
-        <button class="btn btn-primary" id="quizNextBtn" onclick="nextQuestion()" style="display:none;">Volgende →</button>
+  document.getElementById('toolsPanel').innerHTML = `
+    <div class="tools-panel-header">
+      <div class="tools-panel-icon">${p.icon}</div>
+      <div>
+        <div class="tools-panel-title">${p.label}</div>
+        <div class="tools-panel-subtitle">${p.subtitle}</div>
       </div>
     </div>
+    <div class="tools-panel-tip">💡 ${p.tip}</div>
+    <div class="tools-list">
+      ${p.tools.map(t => `
+        <div class="tool-card">
+          <div class="tool-emoji">${t.emoji}</div>
+          <div class="tool-info">
+            <div class="tool-name">${t.name}</div>
+            <div class="tool-desc">${t.desc}</div>
+            <div class="tool-tags">
+              ${t.tags.map(tag => `<span class="tool-tag ${tagClass(tag)}">${tag}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
   `;
-  loadQuizQuestion();
 }
 
 // ── SCROLL REVEAL ─────────────────────────────────────────────────────────
