@@ -273,6 +273,10 @@
   .tool-emoji { font-size: 1.6rem; flex-shrink: 0; margin-top: .1rem; }
   .tool-info {}
   .tool-name { font-weight: 700; font-size: .95rem; margin-bottom: .25rem; }
+  .tool-link { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: .3rem; }
+  .tool-link:hover { color: var(--accent); }
+  .tool-link:hover .tool-ext { opacity: 1; }
+  .tool-ext { font-size: .7rem; opacity: .4; transition: opacity .2s; }
   .tool-desc { color: var(--muted); font-size: .85rem; line-height: 1.5; }
   .tool-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .5rem; }
   .tool-tag {
@@ -882,12 +886,12 @@ const professions = [
     subtitle:'Software Engineers, DevOps, Architects',
     tip:'AI-assistenten schrijven al 30-50% van de code bij vroege adopters. De grootste winst zit in boilerplate, tests en documentatie.',
     tools:[
-      { emoji:'🤖', name:'GitHub Copilot', desc:'AI die direct in VS Code / JetBrains code aanvult, functies genereert en bugs oplegt op basis van context.', tags:['Code','Betaald'] },
-      { emoji:'⚡', name:'Cursor', desc:'AI-first code editor gebouwd op VS Code. Begrijpt je volledige codebase en kan multi-file refactors uitvoeren.', tags:['Code','Betaald'] },
-      { emoji:'🧠', name:'Claude / ChatGPT', desc:'Ideaal voor architectuurvragen, code reviews, debugging en het uitleggen van complexe concepten.', tags:['Analyse','Freemium'] },
-      { emoji:'🕵️', name:'Codeium', desc:'Gratis alternatief voor Copilot. Ondersteunt 70+ talen en integreert met vrijwel elke IDE.', tags:['Code','Gratis'] },
-      { emoji:'🤖', name:'Devin (Cognition)', desc:'Autonome AI software-engineer die zelfstandig taken uitvoert: van issue naar werkende PR.', tags:['Agent','Betaald'] },
-      { emoji:'🔍', name:'Tabnine', desc:'Privacy-first AI code-assistent die ook on-premise draait. Populair in enterprise omgevingen.', tags:['Code','Betaald'] },
+      { emoji:'🤖', name:'GitHub Copilot', url:'https://github.com/features/copilot', desc:'AI die direct in VS Code / JetBrains code aanvult, functies genereert en bugs oplegt op basis van context.', tags:['Code','Betaald'] },
+      { emoji:'⚡', name:'Cursor', url:'https://cursor.sh', desc:'AI-first code editor gebouwd op VS Code. Begrijpt je volledige codebase en kan multi-file refactors uitvoeren.', tags:['Code','Betaald'] },
+      { emoji:'🧠', name:'Claude / ChatGPT', url:'https://claude.ai', desc:'Ideaal voor architectuurvragen, code reviews, debugging en het uitleggen van complexe concepten.', tags:['Analyse','Freemium'] },
+      { emoji:'🕵️', name:'Codeium', url:'https://codeium.com', desc:'Gratis alternatief voor Copilot. Ondersteunt 70+ talen en integreert met vrijwel elke IDE.', tags:['Code','Gratis'] },
+      { emoji:'🤖', name:'Devin (Cognition)', url:'https://cognition.ai', desc:'Autonome AI software-engineer die zelfstandig taken uitvoert: van issue naar werkende PR.', tags:['Agent','Betaald'] },
+      { emoji:'🔍', name:'Tabnine', url:'https://www.tabnine.com', desc:'Privacy-first AI code-assistent die ook on-premise draait. Populair in enterprise omgevingen.', tags:['Code','Betaald'] },
     ]
   },
   {
@@ -895,12 +899,12 @@ const professions = [
     subtitle:'Marketeers, Copywriters, PR-professionals',
     tip:'AI bespaart marketeers gemiddeld 5 uur per week op het schrijven van content. De kracht zit in het schalen van gepersonaliseerde boodschappen.',
     tools:[
-      { emoji:'✍️', name:'Jasper AI', desc:'Marketingteksten, advertentiecopy en e-mails schrijven op merkstijl. Integreert met HubSpot en Salesforce.', tags:['Tekst','Betaald'] },
-      { emoji:'🎨', name:'Canva AI (Magic Studio)', desc:'Ontwerp met AI: afbeeldingen genereren, achtergronden verwijderen, presentaties auto-designen.', tags:['Design','Freemium'] },
-      { emoji:'📱', name:'Hootsuite OwlyWriter AI', desc:'Social media posts genereren, plannen en analyseren. Geeft AI-gebaseerde aanbevelingen voor best postingtijden.', tags:['Social','Betaald'] },
-      { emoji:'🔗', name:'HubSpot AI', desc:'CRM met ingebouwde AI voor e-mailpersonalisatie, leadscoring en content-aanbevelingen.', tags:['CRM','Betaald'] },
-      { emoji:'🖼️', name:'Adobe Firefly', desc:'Professionele AI-beeldgeneratie geïntegreerd in Photoshop en Illustrator. Commercieel veilig gebruik.', tags:['Design','Betaald'] },
-      { emoji:'📊', name:'Semrush AI', desc:'AI-gestuurde SEO-analyse, contentstrategie en concurrentieonderzoek in één platform.', tags:['SEO','Betaald'] },
+      { emoji:'✍️', name:'Jasper AI', url:'https://www.jasper.ai', desc:'Marketingteksten, advertentiecopy en e-mails schrijven op merkstijl. Integreert met HubSpot en Salesforce.', tags:['Tekst','Betaald'] },
+      { emoji:'🎨', name:'Canva AI (Magic Studio)', url:'https://www.canva.com/magic-studio/', desc:'Ontwerp met AI: afbeeldingen genereren, achtergronden verwijderen, presentaties auto-designen.', tags:['Design','Freemium'] },
+      { emoji:'📱', name:'Hootsuite OwlyWriter AI', url:'https://www.hootsuite.com/platform/owlywriter-ai', desc:'Social media posts genereren, plannen en analyseren. Geeft AI-gebaseerde aanbevelingen voor best postingtijden.', tags:['Social','Betaald'] },
+      { emoji:'🔗', name:'HubSpot AI', url:'https://www.hubspot.com/artificial-intelligence', desc:'CRM met ingebouwde AI voor e-mailpersonalisatie, leadscoring en content-aanbevelingen.', tags:['CRM','Betaald'] },
+      { emoji:'🖼️', name:'Adobe Firefly', url:'https://firefly.adobe.com', desc:'Professionele AI-beeldgeneratie geïntegreerd in Photoshop en Illustrator. Commercieel veilig gebruik.', tags:['Design','Betaald'] },
+      { emoji:'📊', name:'Semrush AI', url:'https://www.semrush.com/ai-tools/', desc:'AI-gestuurde SEO-analyse, contentstrategie en concurrentieonderzoek in één platform.', tags:['SEO','Betaald'] },
     ]
   },
   {
@@ -908,12 +912,12 @@ const professions = [
     subtitle:'Projectmanagers, Leidinggevenden, C-suite',
     tip:'Microsoft onderzoek: Copilot-gebruikers besparen gemiddeld 1,2 uur per dag op vergaderingen, e-mail en rapportage.',
     tools:[
-      { emoji:'🏢', name:'Microsoft 365 Copilot', desc:'AI in Word, Excel, PowerPoint, Outlook en Teams. Samenvat vergaderingen, stelt e-mails op, maakt presentaties.', tags:['Productiviteit','Betaald'] },
-      { emoji:'📝', name:'Notion AI', desc:'Aantekeningen samenvatten, actiepunten extraheren, projectdocumentatie opstellen in je bestaande werkruimte.', tags:['Notities','Betaald'] },
-      { emoji:'🎙️', name:'Otter.ai', desc:'Transcribeert vergaderingen real-time, herkent sprekers en maakt automatisch samenvattingen met actiepunten.', tags:['Meetings','Freemium'] },
-      { emoji:'🔥', name:'Fireflies.ai', desc:'AI-notulist voor Google Meet, Zoom en Teams. Doorzoekbare transcripties en CRM-integraties.', tags:['Meetings','Freemium'] },
-      { emoji:'📈', name:'Gamma AI', desc:'Presentaties en rapporten maken via een prompt. Levert direct professionele slides op.', tags:['Presentaties','Freemium'] },
-      { emoji:'🤝', name:'Reclaim AI', desc:'AI plant je agenda automatisch: beschermt focustijd, plant 1-op-1s en herplant bij conflicten.', tags:['Agenda','Betaald'] },
+      { emoji:'🏢', name:'Microsoft 365 Copilot', url:'https://www.microsoft.com/microsoft-365/copilot', desc:'AI in Word, Excel, PowerPoint, Outlook en Teams. Samenvat vergaderingen, stelt e-mails op, maakt presentaties.', tags:['Productiviteit','Betaald'] },
+      { emoji:'📝', name:'Notion AI', url:'https://www.notion.so/product/ai', desc:'Aantekeningen samenvatten, actiepunten extraheren, projectdocumentatie opstellen in je bestaande werkruimte.', tags:['Notities','Betaald'] },
+      { emoji:'🎙️', name:'Otter.ai', url:'https://otter.ai', desc:'Transcribeert vergaderingen real-time, herkent sprekers en maakt automatisch samenvattingen met actiepunten.', tags:['Meetings','Freemium'] },
+      { emoji:'🔥', name:'Fireflies.ai', url:'https://fireflies.ai', desc:'AI-notulist voor Google Meet, Zoom en Teams. Doorzoekbare transcripties en CRM-integraties.', tags:['Meetings','Freemium'] },
+      { emoji:'📈', name:'Gamma AI', url:'https://gamma.app', desc:'Presentaties en rapporten maken via een prompt. Levert direct professionele slides op.', tags:['Presentaties','Freemium'] },
+      { emoji:'🤝', name:'Reclaim AI', url:'https://reclaim.ai', desc:'AI plant je agenda automatisch: beschermt focustijd, plant 1-op-1s en herplant bij conflicten.', tags:['Agenda','Betaald'] },
     ]
   },
   {
@@ -921,12 +925,12 @@ const professions = [
     subtitle:'Advocaten, Juristen, Compliance-officers',
     tip:'Contract-review dat handmatig 4 uur kostte, duurt met AI-tools 10-20 minuten. Juridisch redeneren en eindverantwoordelijkheid blijven menselijk.',
     tools:[
-      { emoji:'⚖️', name:'Harvey AI', desc:'Juridisch AI-platform voor contract-analyse, due diligence en juridisch onderzoek. Gebruikt door toonaangevende kantoren.', tags:['Onderzoek','Betaald'] },
-      { emoji:'📁', name:'Clio Duo', desc:'AI-assistent in het Clio praktijkbeheer-platform. Helpt bij tijdregistratie, correspondentie en zaakbeheer.', tags:['Beheer','Betaald'] },
-      { emoji:'🔍', name:'Lexis+ AI', desc:'Juridisch onderzoek via LexisNexis met generatieve AI. Samenvatten van jurisprudentie en wetgeving.', tags:['Research','Betaald'] },
-      { emoji:'📄', name:'Kira Systems', desc:'Gespecialiseerd in contractanalyse: extraheert clausules, herkent risico\'s en vergelijkt met standaarden.', tags:['Contracten','Betaald'] },
-      { emoji:'🧠', name:'Claude (Anthropic)', desc:'Sterk in lange documentanalyse (200k tokens). Geschikt voor het doorzoeken van grote contractdossiers.', tags:['Analyse','Freemium'] },
-      { emoji:'📋', name:'Spellbook (Rally)', desc:'AI-contract-drafting direct in Word. Stelt clausules voor, signaleert ontbrekende bepalingen.', tags:['Contracten','Betaald'] },
+      { emoji:'⚖️', name:'Harvey AI', url:'https://www.harvey.ai', desc:'Juridisch AI-platform voor contract-analyse, due diligence en juridisch onderzoek. Gebruikt door toonaangevende kantoren.', tags:['Onderzoek','Betaald'] },
+      { emoji:'📁', name:'Clio Duo', url:'https://www.clio.com/features/clio-duo/', desc:'AI-assistent in het Clio praktijkbeheer-platform. Helpt bij tijdregistratie, correspondentie en zaakbeheer.', tags:['Beheer','Betaald'] },
+      { emoji:'🔍', name:'Lexis+ AI', url:'https://www.lexisnexis.com/en-us/products/lexis-plus-ai.page', desc:'Juridisch onderzoek via LexisNexis met generatieve AI. Samenvatten van jurisprudentie en wetgeving.', tags:['Research','Betaald'] },
+      { emoji:'📄', name:'Kira Systems', url:'https://kirasystems.com', desc:'Gespecialiseerd in contractanalyse: extraheert clausules, herkent risico\'s en vergelijkt met standaarden.', tags:['Contracten','Betaald'] },
+      { emoji:'🧠', name:'Claude (Anthropic)', url:'https://claude.ai', desc:'Sterk in lange documentanalyse (200k tokens). Geschikt voor het doorzoeken van grote contractdossiers.', tags:['Analyse','Freemium'] },
+      { emoji:'📋', name:'Spellbook (Rally)', url:'https://www.spellbook.legal', desc:'AI-contract-drafting direct in Word. Stelt clausules voor, signaleert ontbrekende bepalingen.', tags:['Contracten','Betaald'] },
     ]
   },
   {
@@ -934,12 +938,12 @@ const professions = [
     subtitle:'Artsen, Verpleegkundigen, Zorgprofessionals',
     tip:'AI vermindert administratieve last voor artsen met gemiddeld 30%. Nuance DAX wordt al gebruikt door 500+ ziekenhuizen wereldwijd.',
     tools:[
-      { emoji:'🎙️', name:'Nuance DAX Copilot', desc:'Transcribeert arts-patiëntgesprekken en genereert automatisch SOAP-notities in het EPD. Goedgekeurd voor klinisch gebruik.', tags:['Documentatie','Betaald'] },
-      { emoji:'🩺', name:'Glass Health', desc:'AI-ondersteuning bij klinische beslissingen: differentiaaldiagnose, behandelplannen en medicatiecontrole.', tags:['Diagnose','Freemium'] },
-      { emoji:'💊', name:'Nabla Copilot', desc:'Real-time AI-assistent die consult transcribeert, samenvatting maakt en medicatie/verwijzingen voorstelt.', tags:['Consult','Betaald'] },
-      { emoji:'🔬', name:'PathAI', desc:'AI-pathologie platform dat weefselanalyse ondersteunt voor kankerdiagnostiek met hoge nauwkeurigheid.', tags:['Diagnostiek','Betaald'] },
-      { emoji:'📊', name:'Epic + AI (Cognitive)', desc:'Het meest gebruikte EPD integreert AI voor predictieve scores, samenvatting en klinische beslissingsondersteuning.', tags:['EPD','Betaald'] },
-      { emoji:'🧬', name:'AlphaFold 3', desc:'Voorspelt eiwitstructuren en interacties. Essentieel voor onderzoekers in drug discovery en moleculaire biologie.', tags:['Research','Gratis'] },
+      { emoji:'🎙️', name:'Nuance DAX Copilot', url:'https://www.nuance.com/healthcare/dragon-ai-clinical-solutions/dax-copilot.html', desc:'Transcribeert arts-patiëntgesprekken en genereert automatisch SOAP-notities in het EPD. Goedgekeurd voor klinisch gebruik.', tags:['Documentatie','Betaald'] },
+      { emoji:'🩺', name:'Glass Health', url:'https://glass.health', desc:'AI-ondersteuning bij klinische beslissingen: differentiaaldiagnose, behandelplannen en medicatiecontrole.', tags:['Diagnose','Freemium'] },
+      { emoji:'💊', name:'Nabla Copilot', url:'https://www.nabla.com', desc:'Real-time AI-assistent die consult transcribeert, samenvatting maakt en medicatie/verwijzingen voorstelt.', tags:['Consult','Betaald'] },
+      { emoji:'🔬', name:'PathAI', url:'https://www.pathai.com', desc:'AI-pathologie platform dat weefselanalyse ondersteunt voor kankerdiagnostiek met hoge nauwkeurigheid.', tags:['Diagnostiek','Betaald'] },
+      { emoji:'📊', name:'Epic + AI (Cognitive)', url:'https://www.epic.com/software/cognitive-computing/', desc:'Het meest gebruikte EPD integreert AI voor predictieve scores, samenvatting en klinische beslissingsondersteuning.', tags:['EPD','Betaald'] },
+      { emoji:'🧬', name:'AlphaFold 3', url:'https://alphafold.ebi.ac.uk', desc:'Voorspelt eiwitstructuren en interacties. Essentieel voor onderzoekers in drug discovery en moleculaire biologie.', tags:['Research','Gratis'] },
     ]
   },
   {
@@ -947,12 +951,12 @@ const professions = [
     subtitle:'Accountants, Analisten, Financieel Adviseurs',
     tip:'AI-gestuurde boekhoudtools verminderen handmatige datainvoer met 80%. Fraudedetectie verbeterde sectorbreed met 40% door ML-modellen.',
     tools:[
-      { emoji:'📊', name:'Bloomberg Terminal + AI', desc:'Bloomberg GPT integreert financieel taalmodel voor marktsamenvatting, nieuwsanalyse en rapportgeneratie.', tags:['Markten','Betaald'] },
-      { emoji:'🧾', name:'Vic.ai', desc:'Autonome AI voor crediteurenbeheer: verwerkt facturen, matcht orders en boekt automatisch.', tags:['Boekhouden','Betaald'] },
-      { emoji:'📈', name:'Julius AI', desc:'Chat met je financiële data: Excel/CSV uploaden en analyses, grafieken en inzichten opvragen in gewone taal.', tags:['Data-analyse','Freemium'] },
-      { emoji:'🔍', name:'Kira Systems', desc:'AI-contractanalyse voor due diligence in M&A-processen. Extraheert financiële clausules en verplichtingen.', tags:['Due diligence','Betaald'] },
-      { emoji:'🤖', name:'Planful Predict', desc:'AI-gestuurde financiële planning en forecasting. Integreert met ERP-systemen voor real-time voorspellingen.', tags:['FP&A','Betaald'] },
-      { emoji:'💬', name:'Perplexity AI', desc:'AI-zoekmachine voor real-time financieel nieuws, bedrijfsanalyse en marktonderzoek met bronvermelding.', tags:['Research','Freemium'] },
+      { emoji:'📊', name:'Bloomberg Terminal + AI', url:'https://www.bloomberg.com/professional/product/bloomberg-terminal/', desc:'Bloomberg GPT integreert financieel taalmodel voor marktsamenvatting, nieuwsanalyse en rapportgeneratie.', tags:['Markten','Betaald'] },
+      { emoji:'🧾', name:'Vic.ai', url:'https://www.vic.ai', desc:'Autonome AI voor crediteurenbeheer: verwerkt facturen, matcht orders en boekt automatisch.', tags:['Boekhouden','Betaald'] },
+      { emoji:'📈', name:'Julius AI', url:'https://julius.ai', desc:'Chat met je financiële data: Excel/CSV uploaden en analyses, grafieken en inzichten opvragen in gewone taal.', tags:['Data-analyse','Freemium'] },
+      { emoji:'🔍', name:'Kira Systems', url:'https://kirasystems.com', desc:'AI-contractanalyse voor due diligence in M&A-processen. Extraheert financiële clausules en verplichtingen.', tags:['Due diligence','Betaald'] },
+      { emoji:'🤖', name:'Planful Predict', url:'https://planful.com/solutions/predict/', desc:'AI-gestuurde financiële planning en forecasting. Integreert met ERP-systemen voor real-time voorspellingen.', tags:['FP&A','Betaald'] },
+      { emoji:'💬', name:'Perplexity AI', url:'https://www.perplexity.ai', desc:'AI-zoekmachine voor real-time financieel nieuws, bedrijfsanalyse en marktonderzoek met bronvermelding.', tags:['Research','Freemium'] },
     ]
   },
   {
@@ -960,12 +964,12 @@ const professions = [
     subtitle:'HR-managers, Recruiters, L&D-professionals',
     tip:'AI-screening tools kunnen CV-beoordeling 10x versnellen. Let op bias-risico\'s: valideer altijd op eerlijkheid en diversiteit.',
     tools:[
-      { emoji:'🔍', name:'LinkedIn Recruiter + AI', desc:'AI-aanbevelingen voor kandidaten, automatisch berichten personaliseren en talentpool-analyse.', tags:['Werving','Betaald'] },
-      { emoji:'✍️', name:'Textio', desc:'AI verbetert vacatureteksten voor inclusiviteit en bereik. Voorspelt welke taal meer diverse kandidaten trekt.', tags:['Werving','Betaald'] },
-      { emoji:'🤖', name:'Paradox (Olivia)', desc:'Conversationele AI die kandidaatgesprekken voert, vragen beantwoordt en interviews inplant via chat.', tags:['Chatbot','Betaald'] },
-      { emoji:'🏢', name:'Workday AI', desc:'HCM-platform met AI voor talentprognoses, verloopcijfers voorspellen en persoonlijke leertrajecten.', tags:['HRM','Betaald'] },
-      { emoji:'📚', name:'360Learning AI', desc:'AI-leersysteem dat gepersonaliseerde leertrajecten maakt op basis van rol, vaardigheden en leerstijl.', tags:['L&D','Betaald'] },
-      { emoji:'🧠', name:'Claude / ChatGPT', desc:'Functieprofielen schrijven, onboardingdocumenten opstellen, beleid samenvatten en vragenlijsten genereren.', tags:['Tekst','Freemium'] },
+      { emoji:'🔍', name:'LinkedIn Recruiter + AI', url:'https://business.linkedin.com/talent-solutions/recruiter', desc:'AI-aanbevelingen voor kandidaten, automatisch berichten personaliseren en talentpool-analyse.', tags:['Werving','Betaald'] },
+      { emoji:'✍️', name:'Textio', url:'https://textio.com', desc:'AI verbetert vacatureteksten voor inclusiviteit en bereik. Voorspelt welke taal meer diverse kandidaten trekt.', tags:['Werving','Betaald'] },
+      { emoji:'🤖', name:'Paradox (Olivia)', url:'https://www.paradox.ai', desc:'Conversationele AI die kandidaatgesprekken voert, vragen beantwoordt en interviews inplant via chat.', tags:['Chatbot','Betaald'] },
+      { emoji:'🏢', name:'Workday AI', url:'https://www.workday.com/en-us/products/artificial-intelligence.html', desc:'HCM-platform met AI voor talentprognoses, verloopcijfers voorspellen en persoonlijke leertrajecten.', tags:['HRM','Betaald'] },
+      { emoji:'📚', name:'360Learning AI', url:'https://360learning.com', desc:'AI-leersysteem dat gepersonaliseerde leertrajecten maakt op basis van rol, vaardigheden en leerstijl.', tags:['L&D','Betaald'] },
+      { emoji:'🧠', name:'Claude / ChatGPT', url:'https://claude.ai', desc:'Functieprofielen schrijven, onboardingdocumenten opstellen, beleid samenvatten en vragenlijsten genereren.', tags:['Tekst','Freemium'] },
     ]
   },
   {
@@ -973,12 +977,12 @@ const professions = [
     subtitle:'Docenten, Trainers, Onderwijsontwikkelaars',
     tip:'UNESCO: 60% van docenten wereldwijd gebruikt al AI voor lesvoorbereiding. AI-tutors verhogen leerresultaten met gemiddeld 20%.',
     tools:[
-      { emoji:'🧑‍🏫', name:'Khanmigo (Khan Academy)', desc:'Persoonlijke AI-tutor voor leerlingen en lesplanningsassistent voor docenten. Socratische aanpak: geeft hints, geen antwoorden.', tags:['Tutoring','Gratis'] },
-      { emoji:'🎬', name:'Synthesia', desc:'Maak professionele AI-video\'s met een avatar en gesproken tekst. Ideaal voor e-learningmodules.', tags:['Video','Betaald'] },
-      { emoji:'📝', name:'Diffit', desc:'Differentieert lesmateriaal automatisch op leesniveau. Past teksten aan voor verschillende leergroepen.', tags:['Differentiatie','Freemium'] },
-      { emoji:'🎯', name:'MagicSchool AI', desc:'All-in-one AI voor docenten: lesplannen, rubrics, differentiatie, communicatie met ouders en meer.', tags:['Lesvoorbereiding','Freemium'] },
-      { emoji:'✍️', name:'Grammarly', desc:'AI schrijfassistent die grammar, stijl en toon verbetert. Handig bij het geven van schrijffeedback.', tags:['Schrijven','Freemium'] },
-      { emoji:'🔊', name:'ElevenLabs', desc:'Tekst omzetten naar realistische spraak in 29 talen. Perfect voor het maken van audio-leerinhoud.', tags:['Audio','Freemium'] },
+      { emoji:'🧑‍🏫', name:'Khanmigo (Khan Academy)', url:'https://www.khanacademy.org/khan-labs', desc:'Persoonlijke AI-tutor voor leerlingen en lesplanningsassistent voor docenten. Socratische aanpak: geeft hints, geen antwoorden.', tags:['Tutoring','Gratis'] },
+      { emoji:'🎬', name:'Synthesia', url:'https://www.synthesia.io', desc:'Maak professionele AI-video\'s met een avatar en gesproken tekst. Ideaal voor e-learningmodules.', tags:['Video','Betaald'] },
+      { emoji:'📝', name:'Diffit', url:'https://diffit.me', desc:'Differentieert lesmateriaal automatisch op leesniveau. Past teksten aan voor verschillende leergroepen.', tags:['Differentiatie','Freemium'] },
+      { emoji:'🎯', name:'MagicSchool AI', url:'https://www.magicschool.ai', desc:'All-in-one AI voor docenten: lesplannen, rubrics, differentiatie, communicatie met ouders en meer.', tags:['Lesvoorbereiding','Freemium'] },
+      { emoji:'✍️', name:'Grammarly', url:'https://www.grammarly.com', desc:'AI schrijfassistent die grammar, stijl en toon verbetert. Handig bij het geven van schrijffeedback.', tags:['Schrijven','Freemium'] },
+      { emoji:'🔊', name:'ElevenLabs', url:'https://elevenlabs.io', desc:'Tekst omzetten naar realistische spraak in 29 talen. Perfect voor het maken van audio-leerinhoud.', tags:['Audio','Freemium'] },
     ]
   },
   {
@@ -986,12 +990,12 @@ const professions = [
     subtitle:'Designers, Videografen, Content Creators',
     tip:'Adobe-onderzoek: creatieve professionals die AI-tools gebruiken produceren 2-3x meer content in dezelfde tijd. AI vervangt niet de visie, maar versnelt de uitvoering.',
     tools:[
-      { emoji:'🖼️', name:'Midjourney v7', desc:'De standaard voor kwalitatieve AI-beeldgeneratie. Prachtige artistieke stijlen via Discord of de eigen webapp.', tags:['Beeld','Betaald'] },
-      { emoji:'✨', name:'Adobe Firefly', desc:'Commercieel veilige AI-beeldgeneratie in Photoshop, Illustrator en Express. Getraind op gelicentieerde content.', tags:['Beeld','Betaald'] },
-      { emoji:'🎬', name:'Runway Gen-3', desc:'AI videobewerking en -generatie. Tekst-naar-video, in-painting en motion brush voor professionele video\'s.', tags:['Video','Betaald'] },
-      { emoji:'🎵', name:'Suno AI', desc:'Genereert complete nummers met vocals en instrumentatie vanuit een tekstprompt. Volledig muziekproductie.', tags:['Audio','Freemium'] },
-      { emoji:'📐', name:'Canva AI (Magic Studio)', desc:'Volledige ontwerpworkflow met AI: genereren, aanpassen, animeren en publiceren in één tool.', tags:['Design','Freemium'] },
-      { emoji:'🗣️', name:'ElevenLabs', desc:'Meest realistische AI-stemgeneratie. Stemklonen, voice-overs en audio in 29 talen voor podcasts en video.', tags:['Audio','Freemium'] },
+      { emoji:'🖼️', name:'Midjourney v7', url:'https://www.midjourney.com', desc:'De standaard voor kwalitatieve AI-beeldgeneratie. Prachtige artistieke stijlen via Discord of de eigen webapp.', tags:['Beeld','Betaald'] },
+      { emoji:'✨', name:'Adobe Firefly', url:'https://firefly.adobe.com', desc:'Commercieel veilige AI-beeldgeneratie in Photoshop, Illustrator en Express. Getraind op gelicentieerde content.', tags:['Beeld','Betaald'] },
+      { emoji:'🎬', name:'Runway Gen-3', url:'https://runwayml.com', desc:'AI videobewerking en -generatie. Tekst-naar-video, in-painting en motion brush voor professionele video\'s.', tags:['Video','Betaald'] },
+      { emoji:'🎵', name:'Suno AI', url:'https://suno.com', desc:'Genereert complete nummers met vocals en instrumentatie vanuit een tekstprompt. Volledig muziekproductie.', tags:['Audio','Freemium'] },
+      { emoji:'📐', name:'Canva AI (Magic Studio)', url:'https://www.canva.com/magic-studio/', desc:'Volledige ontwerpworkflow met AI: genereren, aanpassen, animeren en publiceren in één tool.', tags:['Design','Freemium'] },
+      { emoji:'🗣️', name:'ElevenLabs', url:'https://elevenlabs.io', desc:'Meest realistische AI-stemgeneratie. Stemklonen, voice-overs en audio in 29 talen voor podcasts en video.', tags:['Audio','Freemium'] },
     ]
   },
   {
@@ -999,12 +1003,12 @@ const professions = [
     subtitle:'Consultants, Data-analisten, Strategen',
     tip:'McKinsey: consultants die GenAI gebruiken leveren 40% sneller analyses en rapporten van hogere kwaliteit. Cruciaal voordeel: bronkritisch blijven.',
     tools:[
-      { emoji:'🔍', name:'Perplexity AI', desc:'AI-zoekmachine met bronvermelding. Ideaal voor snel marktonderzoek, concurrentieanalyse en feitenchecks.', tags:['Research','Freemium'] },
-      { emoji:'📊', name:'Julius AI', desc:'Conversationele data-analyse: upload Excel/CSV en stel vragen in gewone taal. Maakt grafieken en inzichten.', tags:['Data','Freemium'] },
-      { emoji:'🎯', name:'Consensus', desc:'AI-zoekmachine voor wetenschappelijke literatuur. Vindt en synthetiseert peer-reviewed bewijs voor claims.', tags:['Research','Freemium'] },
-      { emoji:'📝', name:'Notion AI', desc:'Onderzoekssamenvattingen, rapportstructuren en aantekeningen organiseren in je bestaande kennisbase.', tags:['Notities','Betaald'] },
-      { emoji:'💬', name:'Claude (Anthropic)', desc:'Uitstekend voor het analyseren van lange documenten, strategische denkoefeningen en het schrijven van rapporten.', tags:['Analyse','Freemium'] },
-      { emoji:'📈', name:'Tableau + Einstein AI', desc:'Business intelligence-platform met ingebouwde AI voor automatische insights, prognoses en NL-queries op data.', tags:['BI','Betaald'] },
+      { emoji:'🔍', name:'Perplexity AI', url:'https://www.perplexity.ai', desc:'AI-zoekmachine met bronvermelding. Ideaal voor snel marktonderzoek, concurrentieanalyse en feitenchecks.', tags:['Research','Freemium'] },
+      { emoji:'📊', name:'Julius AI', url:'https://julius.ai', desc:'Conversationele data-analyse: upload Excel/CSV en stel vragen in gewone taal. Maakt grafieken en inzichten.', tags:['Data','Freemium'] },
+      { emoji:'🎯', name:'Consensus', url:'https://consensus.app', desc:'AI-zoekmachine voor wetenschappelijke literatuur. Vindt en synthetiseert peer-reviewed bewijs voor claims.', tags:['Research','Freemium'] },
+      { emoji:'📝', name:'Notion AI', url:'https://www.notion.so/product/ai', desc:'Onderzoekssamenvattingen, rapportstructuren en aantekeningen organiseren in je bestaande kennisbase.', tags:['Notities','Betaald'] },
+      { emoji:'💬', name:'Claude (Anthropic)', url:'https://claude.ai', desc:'Uitstekend voor het analyseren van lange documenten, strategische denkoefeningen en het schrijven van rapporten.', tags:['Analyse','Freemium'] },
+      { emoji:'📈', name:'Tableau + Einstein AI', url:'https://www.tableau.com/products/einstein-analytics', desc:'Business intelligence-platform met ingebouwde AI voor automatische insights, prognoses en NL-queries op data.', tags:['BI','Betaald'] },
     ]
   },
 ];
@@ -1228,7 +1232,7 @@ function showProfession(id) {
         <div class="tool-card">
           <div class="tool-emoji">${t.emoji}</div>
           <div class="tool-info">
-            <div class="tool-name">${t.name}</div>
+            <div class="tool-name">${t.url ? `<a href="${t.url}" target="_blank" rel="noopener noreferrer" class="tool-link">${t.name}<span class="tool-ext">↗</span></a>` : t.name}</div>
             <div class="tool-desc">${t.desc}</div>
             <div class="tool-tags">
               ${t.tags.map(tag => `<span class="tool-tag ${tagClass(tag)}">${tag}</span>`).join('')}
