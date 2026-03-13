@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI in 2026 — Stand van Zaken</title>
+<style>
+  :root {
+    --bg: #05060f;
+    --surface: #0d0e1f;
+    --surface2: #12142a;
+    --border: #1e2140;
+    --accent: #6366f1;
+    --accent2: #8b5cf6;
+    --accent3: #06b6d4;
+    --accent4: #10b981;
+    --accent5: #f59e0b;
+    --accent6: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --glow: rgba(99,102,241,0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 2rem;
+  }
+  #hero canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; opacity: .6;
+  }
+  #hero .content { position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(99,102,241,.15); border: 1px solid var(--accent);
+    border-radius: 999px; padding: .4rem 1.2rem; font-size: .85rem;
+    color: #a5b4fc; margin-bottom: 1.5rem; letter-spacing: .05em;
+  }
+  .hero-badge .dot { width:8px;height:8px;border-radius:50%;background:var(--accent);
+    animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+  h1.hero-title {
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 30%, #a5b4fc 60%, #06b6d4 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+  }
+  .hero-sub {
+    font-size: clamp(1rem,2.5vw,1.3rem);
+    color: var(--muted); max-width: 640px; margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    color: var(--muted); font-size: .8rem; display: flex; flex-direction:column; align-items:center; gap:.5rem;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+  .scroll-arrow { width:20px;height:20px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(5,6,15,.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .75rem 2rem;
+  }
+  .nav-logo {
+    font-weight: 700; font-size: 1.1rem;
+    background: linear-gradient(135deg,var(--accent),var(--accent3));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: .9rem;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: .8rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: .75rem; font-weight: 600;
+  }
+  h2.section-title {
+    font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800;
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .section-desc { color: var(--muted); max-width: 640px; line-height: 1.7; margin-bottom: 3rem; }
+
+  /* ── CARDS ── */
+  .card-grid { display: grid; gap: 1.5rem; }
+  .card-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .card-grid.cols-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .card-grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.75rem;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+    cursor: pointer; position: relative; overflow: hidden;
+  }
+  .card::before {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(135deg, var(--glow), transparent);
+    opacity:0; transition: opacity .3s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 0 30px var(--glow); }
+  .card:hover::before { opacity: 1; }
+  .card-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .card h3 { font-size: 1.1rem; margin-bottom: .5rem; }
+  .card p { color: var(--muted); font-size: .9rem; line-height: 1.6; }
+
+  /* ── STAT CARDS ── */
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.5rem;
+    display: flex; flex-direction: column; gap: .5rem;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 0 25px var(--glow); }
+  .stat-value {
+    font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .stat-label { color: var(--muted); font-size: .9rem; }
+  .stat-change { font-size: .8rem; color: var(--accent4); font-weight: 600; }
+
+  /* ── PROGRESS BARS ── */
+  .progress-item { margin-bottom: 1.5rem; }
+  .progress-header { display:flex; justify-content:space-between; margin-bottom:.5rem; font-size:.9rem; }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+  .progress-fill {
+    height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    width: 0; transition: width 1.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { position:relative; padding-left: 2rem; }
+  .timeline::before {
+    content:''; position:absolute; left:.5rem; top:0; bottom:0;
+    width:2px; background: linear-gradient(to bottom, var(--accent), var(--accent3), transparent);
+  }
+  .timeline-item { position:relative; margin-bottom: 2.5rem; }
+  .timeline-dot {
+    position:absolute; left:-1.75rem; top:.25rem;
+    width:14px; height:14px; border-radius:50%;
+    background: var(--accent); border: 2px solid var(--bg);
+    box-shadow: 0 0 12px var(--accent);
+    transition: transform .3s;
+  }
+  .timeline-item:hover .timeline-dot { transform: scale(1.4); }
+  .timeline-year { font-size:.8rem; color:var(--accent); font-weight:700; letter-spacing:.1em; margin-bottom:.25rem; }
+  .timeline-title { font-weight:700; margin-bottom:.25rem; }
+  .timeline-desc { color:var(--muted); font-size:.9rem; line-height:1.6; }
+
+  /* ── TABS ── */
+  .tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:2rem; }
+  .tab-btn {
+    padding:.6rem 1.2rem; border-radius:8px; border:1px solid var(--border);
+    background: var(--surface); color: var(--muted); cursor:pointer;
+    font-size:.9rem; transition:all .2s;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background:var(--accent); border-color:var(--accent); color:#fff;
+  }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  /* ── MODEL COMPARISON ── */
+  .model-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  .model-table th {
+    text-align:left; padding:.75rem 1rem; background:var(--surface2);
+    color:var(--muted); font-weight:600; border-bottom:1px solid var(--border);
+    font-size:.8rem; letter-spacing:.05em; text-transform:uppercase;
+  }
+  .model-table td { padding:.85rem 1rem; border-bottom:1px solid var(--border); }
+  .model-table tr:hover td { background: rgba(99,102,241,.05); }
+  .model-table tr:last-child td { border-bottom:none; }
+  .badge {
+    display:inline-flex; align-items:center; padding:.25rem .75rem;
+    border-radius:999px; font-size:.75rem; font-weight:600;
+  }
+  .badge-blue { background:rgba(99,102,241,.15); color:#a5b4fc; }
+  .badge-green { background:rgba(16,185,129,.15); color:#6ee7b7; }
+  .badge-orange { background:rgba(245,158,11,.15); color:#fcd34d; }
+  .badge-red { background:rgba(239,68,68,.15); color:#fca5a5; }
+  .badge-cyan { background:rgba(6,182,212,.15); color:#67e8f9; }
+
+  /* ── CAPABILITIES ── */
+  .capability-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; }
+  .cap-item {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:1.25rem; transition: all .3s; text-align:center;
+  }
+  .cap-item:hover { border-color:var(--accent); transform:scale(1.03); }
+  .cap-icon { font-size:2rem; margin-bottom:.75rem; }
+  .cap-name { font-size:.9rem; font-weight:600; margin-bottom:.25rem; }
+  .cap-level { font-size:.8rem; }
+
+  /* ── INTERACTIVE QUIZ ── */
+  .quiz-container {
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:2rem;
+  }
+  .quiz-question { font-size:1.1rem; font-weight:600; margin-bottom:1.5rem; }
+  .quiz-options { display:flex; flex-direction:column; gap:.75rem; }
+  .quiz-option {
+    padding:1rem 1.5rem; border:1px solid var(--border); border-radius:10px;
+    cursor:pointer; transition:all .2s; background:var(--surface2);
+  }
+  .quiz-option:hover:not(.disabled) { border-color:var(--accent); background:rgba(99,102,241,.1); }
+  .quiz-option.correct { border-color:var(--accent4); background:rgba(16,185,129,.1); color:#6ee7b7; }
+  .quiz-option.wrong { border-color:var(--accent6); background:rgba(239,68,68,.1); color:#fca5a5; }
+  .quiz-option.disabled { cursor:default; }
+  .quiz-feedback { margin-top:1.5rem; padding:1rem; border-radius:10px; display:none; }
+  .quiz-feedback.show { display:block; }
+  .quiz-feedback.good { background:rgba(16,185,129,.1); color:#6ee7b7; border:1px solid var(--accent4); }
+  .quiz-feedback.bad { background:rgba(239,68,68,.1); color:#fca5a5; border:1px solid var(--accent6); }
+  .quiz-nav { display:flex; gap:1rem; margin-top:1.5rem; justify-content:space-between; align-items:center; }
+  .btn {
+    padding:.6rem 1.4rem; border-radius:8px; border:none; cursor:pointer;
+    font-size:.9rem; font-weight:600; transition:all .2s;
+  }
+  .btn-primary { background:var(--accent); color:#fff; }
+  .btn-primary:hover { background:#4f46e5; }
+  .btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--border); }
+  .btn-ghost:hover { color:var(--text); border-color:var(--text); }
+  .quiz-score { font-size:.9rem; color:var(--muted); }
+
+  /* ── IMPACT SECTORS ── */
+  .sector-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;
+    transition:all .3s; cursor:pointer;
+  }
+  .sector-card:hover { border-color:var(--accent); box-shadow:0 0 25px var(--glow); }
+  .sector-header { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
+  .sector-icon { font-size:2rem; }
+  .sector-title { font-weight:700; font-size:1rem; }
+  .sector-subtitle { color:var(--muted); font-size:.8rem; }
+  .sector-body { color:var(--muted); font-size:.9rem; line-height:1.6; }
+  .sector-metric { margin-top:1rem; }
+  .sector-metric-label { font-size:.8rem; color:var(--muted); margin-bottom:.4rem; }
+  .sector-bar { height:6px; background:var(--border); border-radius:999px; overflow:hidden; }
+  .sector-bar-fill { height:100%; border-radius:999px; width:0; transition:width 1.5s ease; }
+
+  /* ── RISKS ── */
+  .risk-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;
+    border-left:4px solid var(--accent6); transition:transform .3s;
+  }
+  .risk-card:hover { transform:translateX(4px); }
+  .risk-header { display:flex; justify-content:space-between; align-items:start; margin-bottom:.75rem; }
+  .risk-title { font-weight:700; }
+  .risk-level { font-size:.75rem; }
+  .risk-desc { color:var(--muted); font-size:.9rem; line-height:1.6; }
+
+  /* ── COUNTER ── */
+  .counter { font-variant-numeric: tabular-nums; }
+
+  /* ── CHART ── */
+  .chart-wrap { overflow-x:auto; }
+  .bar-chart { display:flex; align-items:flex-end; gap:.75rem; height:220px; }
+  .bar-col { display:flex; flex-direction:column; align-items:center; gap:.5rem; flex:1; min-width:50px; }
+  .bar-fill {
+    width:100%; border-radius:6px 6px 0 0;
+    background:linear-gradient(to top, var(--accent), var(--accent2));
+    transition: height 1.5s cubic-bezier(.4,0,.2,1);
+    height: 0;
+  }
+  .bar-label { font-size:.75rem; color:var(--muted); text-align:center; }
+  .bar-val { font-size:.8rem; font-weight:700; color:var(--accent3); }
+
+  /* ── DIVIDER ── */
+  .divider { height:1px; background:linear-gradient(to right,transparent,var(--border),transparent); margin:2rem 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align:center; padding:3rem 2rem;
+    color:var(--muted); font-size:.85rem;
+    border-top:1px solid var(--border);
+  }
+
+  /* ── FLOATING DOTS ── */
+  .floating-bg {
+    position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+  }
+  .floating-dot {
+    position:absolute; border-radius:50%;
+    background:radial-gradient(circle, rgba(99,102,241,.3), transparent);
+    animation:floatDot linear infinite;
+  }
+  @keyframes floatDot {
+    0% { transform:translateY(0) scale(1); opacity:.6; }
+    50% { transform:translateY(-60px) scale(1.1); opacity:.3; }
+    100% { transform:translateY(0) scale(1); opacity:.6; }
+  }
+
+  /* ── ACCORDION ── */
+  .accordion-item { border-bottom:1px solid var(--border); }
+  .accordion-btn {
+    width:100%; text-align:left; padding:1.25rem 0; display:flex;
+    justify-content:space-between; align-items:center;
+    background:none; border:none; color:var(--text); cursor:pointer; font-size:1rem;
+  }
+  .accordion-arrow { transition:transform .3s; color:var(--muted); font-size:1.2rem; }
+  .accordion-btn.open .accordion-arrow { transform:rotate(180deg); }
+  .accordion-body { color:var(--muted); font-size:.9rem; line-height:1.7; max-height:0; overflow:hidden; transition:max-height .4s ease; }
+  .accordion-body.open { max-height:400px; padding-bottom:1.25rem; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s, transform .7s; }
+  .reveal.visible { opacity:1; transform:none; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:768px){
+    .nav-links { display:none; }
+    section { padding:3rem 1rem; }
+    .card-grid.cols-2 { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating background -->
+<div class="floating-bg" id="floatingBg"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">AI 2026</div>
+  <div class="nav-links">
+    <a href="#overview">Overzicht</a>
+    <a href="#timeline">Tijdlijn</a>
+    <a href="#models">Modellen</a>
+    <a href="#capabilities">Capaciteiten</a>
+    <a href="#impact">Impact</a>
+    <a href="#risks">Risico's</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero" style="max-width:100%;padding-top:5rem;">
+  <canvas id="neuralCanvas"></canvas>
+  <div class="content">
+    <div class="hero-badge"><span class="dot"></span> Stand van zaken — Maart 2026</div>
+    <h1 class="hero-title">Kunstmatige Intelligentie<br>Vandaag</h1>
+    <p class="hero-sub">Een interactief overzicht van de meest transformatieve technologie van onze tijd — waar we staan, hoe ver we zijn gekomen, en wat er op ons afkomt.</p>
+    <a href="#overview" style="text-decoration:none">
+      <button class="btn btn-primary" style="padding:.9rem 2rem;font-size:1rem;">Ontdek meer ↓</button>
+    </a>
+  </div>
+  <div class="scroll-hint">scroll<div class="scroll-arrow"></div></div>
+</section>
+
+<!-- Key Stats -->
+<section id="overview">
+  <div class="reveal">
+    <div class="section-label">Kerncijfers 2026</div>
+    <h2 class="section-title">AI in Getallen</h2>
+    <p class="section-desc">De schaal van AI-adoptie en -investering is ongekend. Hier zijn de meest impactvolle statistieken van dit moment.</p>
+  </div>
+  <div class="card-grid cols-4 reveal">
+    <div class="stat-card">
+      <div class="stat-value"><span class="counter" data-target="700">0</span>B+</div>
+      <div class="stat-label">Parameters — Frontier modellen</div>
+      <div class="stat-change">▲ 100× groei in 4 jaar</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$<span class="counter" data-target="184">0</span>B</div>
+      <div class="stat-label">Wereldwijde AI-investering 2025</div>
+      <div class="stat-change">▲ +45% t.o.v. 2024</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value"><span class="counter" data-target="500">0</span>M+</div>
+      <div class="stat-label">ChatGPT actieve gebruikers</div>
+      <div class="stat-change">▲ Snelste groei in tech-geschiedenis</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value"><span class="counter" data-target="40">0</span>%</div>
+      <div class="stat-label">Banen deels beïnvloed door AI</div>
+      <div class="stat-change">▲ IMF schatting wereldwijd</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- What is AI section -->
+  <div class="reveal" style="margin-top:2rem;">
+    <div class="section-label">De kern</div>
+    <h2 class="section-title">Wat drijft AI vandaag?</h2>
+    <p class="section-desc">Drie fundamentele pijlers liggen aan de basis van de huidige AI-revolutie.</p>
+  </div>
+  <div class="card-grid cols-3 reveal">
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>Foundation Models</h3>
+      <p>Enorme neurale netwerken getraind op honderden miljarden woorden en afbeeldingen. Ze begrijpen context, redeneren en genereren mensachtige tekst, code en media.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>Rekenkracht (Compute)</h3>
+      <p>GPU-clusters van tienduizenden chips maken het trainen van modellen mogelijk. NVIDIA's H100/H200 zijn het "nieuwe olie". De compute-vraag verdubbelt elke 6 maanden.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Data & RLHF</h3>
+      <p>Reinforcement Learning from Human Feedback maakt modellen nuttiger en veiliger. Synthetische data doorbreekt de dataschaarste — AI traint nu ook op AI-gegenereerde content.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section id="timeline" style="background:var(--surface);border-radius:24px;margin:0 1rem 3rem;padding:3rem;">
+  <div class="reveal">
+    <div class="section-label">Geschiedenis</div>
+    <h2 class="section-title">Van 2017 tot Nu</h2>
+    <p class="section-desc">De versnelling van AI-ontwikkeling is exponentieel. Klik op een mijlpaal voor meer details.</p>
+  </div>
+  <div class="timeline reveal" id="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2017</div>
+      <div class="timeline-title">Transformer Architectuur</div>
+      <div class="timeline-desc">Google publiceert "Attention is All You Need". De transformer vormt de basis van vrijwel alle moderne AI-modellen.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2019</div>
+      <div class="timeline-title">GPT-2 &amp; BERT</div>
+      <div class="timeline-desc">OpenAI's GPT-2 en Google's BERT bewijzen dat grote taalmodellen verbazingwekkend capabel zijn in taalbegrip en -generatie.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2020</div>
+      <div class="timeline-title">GPT-3 &amp; Scaling Laws</div>
+      <div class="timeline-desc">175 miljard parameters. GPT-3 laat zien dat groter = beter. Scaling laws voorspellen de groei van modelprestaties met compute.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2021</div>
+      <div class="timeline-title">DALL·E &amp; Codex</div>
+      <div class="timeline-desc">AI genereert voor het eerst realistische afbeeldingen uit tekst. GitHub Copilot brengt AI-code-assistentie naar miljoenen ontwikkelaars.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2022</div>
+      <div class="timeline-title">ChatGPT — De doorbraak</div>
+      <div class="timeline-desc">100 miljoen gebruikers in 2 maanden. ChatGPT maakt AI toegankelijk voor iedereen. Nooit eerder groeide een consumentenproduct zo snel.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2023</div>
+      <div class="timeline-title">Multimodale AI &amp; Agents</div>
+      <div class="timeline-desc">GPT-4V, Claude 2, Gemini: modellen begrijpen tekst én beeld. Eerste AI-agents die autonoom taken uitvoeren op computers.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2024</div>
+      <div class="timeline-title">Reasoning &amp; Long Context</div>
+      <div class="timeline-desc">o1, Claude 3.5 Sonnet, Gemini 1.5 Pro: 1M+ token context, chain-of-thought redeneren, en bijna menselijk niveau op benchmarks als MMLU.</div>
+    </div>
+    <div class="timeline-item" style="margin-bottom:0">
+      <div class="timeline-dot" style="background:var(--accent3);box-shadow:0 0 12px var(--accent3)"></div>
+      <div class="timeline-year" style="color:var(--accent3)">2025–2026</div>
+      <div class="timeline-title">AI Agents &amp; Autonomous Systems</div>
+      <div class="timeline-desc">AI voert zelfstandig meerdaagse taken uit, schrijft en deployt code, bedient browsers en APIs. Claude 4, GPT-5, Gemini 2.0 bereiken expert-niveau op meerdere domeinen.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Models Comparison -->
+<section id="models">
+  <div class="reveal">
+    <div class="section-label">Landschap</div>
+    <h2 class="section-title">Grote AI-Modellen Vergeleken</h2>
+    <p class="section-desc">De race om de krachtigste AI-modellen is intensiever dan ooit. Klik op een tabblad om te filteren.</p>
+  </div>
+
+  <div class="tabs reveal" id="modelTabs">
+    <button class="tab-btn active" onclick="switchTab('all')">Alle</button>
+    <button class="tab-btn" onclick="switchTab('text')">Taal</button>
+    <button class="tab-btn" onclick="switchTab('image')">Beeld</button>
+    <button class="tab-btn" onclick="switchTab('code')">Code</button>
+    <button class="tab-btn" onclick="switchTab('video')">Video</button>
+  </div>
+
+  <div class="reveal" style="overflow-x:auto;">
+    <table class="model-table" id="modelTable">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Maker</th>
+          <th>Type</th>
+          <th>Sterkte</th>
+          <th>MMLU Score</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="modelBody">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Bar chart -->
+  <div class="reveal" style="margin-top:2rem;">
+    <h3 style="margin-bottom:1.5rem;font-size:1.2rem;">MMLU Benchmark Scores (% correct)</h3>
+    <div class="chart-wrap">
+      <div class="bar-chart" id="benchmarkChart"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Capabilities -->
+<section id="capabilities" style="background:var(--surface);border-radius:24px;margin:0 1rem 3rem;padding:3rem;">
+  <div class="reveal">
+    <div class="section-label">Wat kan AI?</div>
+    <h2 class="section-title">Huidige Capaciteiten</h2>
+    <p class="section-desc">AI heeft in veel gebieden menselijk niveau bereikt of overschreden. Hier een overzicht van waar AI nu staat.</p>
+  </div>
+
+  <div class="tabs reveal" id="capTabs">
+    <button class="tab-btn active" onclick="switchCapTab('performance')">Prestaties</button>
+    <button class="tab-btn" onclick="switchCapTab('skills')">Vaardigheden</button>
+  </div>
+
+  <div class="tab-panel active reveal" id="cap-performance">
+    <div class="card-grid cols-2">
+      <div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Tekstbegrip &amp; Analyse</span><span style="color:var(--accent3)">96%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="96"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Coderen (Python, JS, etc.)</span><span style="color:var(--accent3)">91%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="91"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Wiskundig Redeneren</span><span style="color:var(--accent3)">87%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="87"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Medische Diagnostiek</span><span style="color:var(--accent3)">82%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="82"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Juridische Analyse</span><span style="color:var(--accent3)">79%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="79"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Creativiteit &amp; Schrijven</span><span style="color:var(--accent3)">88%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="88"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Afbeeldingsgeneratie</span><span style="color:var(--accent3)">94%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="94"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Autonoom Redeneren</span><span style="color:var(--accent3)">71%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="71"></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="height:100%;">
+          <div class="card-icon">💡</div>
+          <h3>Wat betekenen deze scores?</h3>
+          <p style="margin-bottom:1rem;">De percentages geven aan hoe goed AI scoort vergeleken met een gemiddelde menselijke expert op gestandaardiseerde tests en benchmarks.</p>
+          <p style="margin-bottom:1rem;">AI heeft inmiddels het <strong style="color:var(--text)">menselijk gemiddelde</strong> overschreden op:</p>
+          <ul style="color:var(--muted);font-size:.9rem;line-height:2;padding-left:1.5rem;">
+            <li>Bar-examen (juridisch) — top 10%</li>
+            <li>SAT / GRE wiskundetoetsen</li>
+            <li>Medisch licensuurexamen (USMLE)</li>
+            <li>Internationale Informatica-olympiade</li>
+            <li>Vertaling (beter dan professioneel)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel reveal" id="cap-skills">
+    <div class="capability-grid">
+      <div class="cap-item">
+        <div class="cap-icon">✍️</div>
+        <div class="cap-name">Tekst Generatie</div>
+        <div class="cap-level"><span class="badge badge-green">Expert niveau</span></div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">💻</div>
+        <div class="cap-name">Code Schrijven</div>
+        <div class="cap-level"><span class="badge badge-green">Senior Dev</span></div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">🖼️</div>
+        <div class="cap-name">Beeld Generatie</div>
+        <div class="cap-level"><span class="badge badge-green">Professioneel</span></div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">🎵</div>
+        <div class="cap-name">Muziek Maken</div>
+        <div class="cap-level"><span class="badge badge-blue">Gevorderd</span></div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">🎬</div>
+        <div class="cap-name">Video Generatie</div>
+        <div class="cap-level"><span class="badge badge-blue">Snel groeiend</span></div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">🔬</div>
+        <div class="cap-name">Wetenschappelijk Redeneren</div>
+        <div class="cap-level"><span class="badge badge-green">Hoog niveau</span></div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">🗣️</div>
+        <div class="cap-name">Spraak &amp; Conversatie</div>
+        <div class="cap-level"><span class="badge badge-green">Menselijk niveau</span></div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">🤖</div>
+        <div class="cap-name">Autonoom Handelen</div>
+        <div class="cap-level"><span class="badge badge-orange">In ontwikkeling</span></div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">🧪</div>
+        <div class="cap-name">Drug Discovery</div>
+        <div class="cap-level"><span class="badge badge-green">Doorbraken</span></div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">♟️</div>
+        <div class="cap-name">Strategie &amp; Plannen</div>
+        <div class="cap-level"><span class="badge badge-green">Supermenselijk</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Impact Sectors -->
+<section id="impact">
+  <div class="reveal">
+    <div class="section-label">Maatschappij</div>
+    <h2 class="section-title">Impact per Sector</h2>
+    <p class="section-desc">AI transformeert elke industrie. Klik op een sector voor details over de veranderingen.</p>
+  </div>
+  <div class="card-grid cols-3 reveal" id="sectorsGrid"></div>
+</section>
+
+<!-- Risks & Ethics -->
+<section id="risks" style="background:var(--surface);border-radius:24px;margin:0 1rem 3rem;padding:3rem;">
+  <div class="reveal">
+    <div class="section-label">Aandachtspunten</div>
+    <h2 class="section-title">Risico's &amp; Uitdagingen</h2>
+    <p class="section-desc">De voordelen van AI komen met serieuze uitdagingen die maatschappelijke en technische aandacht vragen.</p>
+  </div>
+
+  <div class="card-grid cols-2 reveal">
+    <div>
+      <div class="risk-card" style="margin-bottom:1rem;">
+        <div class="risk-header">
+          <div class="risk-title">Baanverdrijving &amp; Ongelijkheid</div>
+          <span class="badge badge-red risk-level">Hoog risico</span>
+        </div>
+        <div class="risk-desc">AI automatiseert routinetaken in kenniswerk. Naar schatting 300 miljoen banen wereldwijd beïnvloed. Omscholing en sociaal beleid zijn urgent.</div>
+      </div>
+      <div class="risk-card" style="margin-bottom:1rem;border-left-color:var(--accent5);">
+        <div class="risk-header">
+          <div class="risk-title">Deepfakes &amp; Desinformatie</div>
+          <span class="badge badge-orange risk-level">Gemiddeld-Hoog</span>
+        </div>
+        <div class="risk-desc">Synthetische media worden bijna niet meer onderscheiden van echt. Verkiezingsintegriteit, vertrouwen in media en persoonlijke reputaties staan onder druk.</div>
+      </div>
+      <div class="risk-card" style="margin-bottom:1rem;border-left-color:var(--accent5);">
+        <div class="risk-header">
+          <div class="risk-title">Privacy &amp; Surveillance</div>
+          <span class="badge badge-orange risk-level">Gemiddeld-Hoog</span>
+        </div>
+        <div class="risk-desc">Gezichtsherkenning, gedragsanalyse en dataprofilering reiken steeds verder. GDPR en AI-regelgeving hinken achterop bij technologische ontwikkeling.</div>
+      </div>
+    </div>
+    <div>
+      <div class="risk-card" style="margin-bottom:1rem;border-left-color:var(--accent2);">
+        <div class="risk-header">
+          <div class="risk-title">Bias &amp; Discriminatie</div>
+          <span class="badge badge-blue risk-level">Aanhoudend</span>
+        </div>
+        <div class="risk-desc">Trainingsdata weerspiegelt historische ongelijkheid. AI-systemen versterken bestaande biases in hiring, justitie, en kredietverlening zonder bewuste correctie.</div>
+      </div>
+      <div class="risk-card" style="margin-bottom:1rem;border-left-color:var(--accent6);">
+        <div class="risk-header">
+          <div class="risk-title">Veiligheidsdreigingen (AI Weapons)</div>
+          <span class="badge badge-red risk-level">Hoog risico</span>
+        </div>
+        <div class="risk-desc">AI-gestuurde cyberaanvallen, autonome wapensystemen en dual-use risico's vragen om internationale verdragen. Geopolitieke AI-race vergroot spanningen.</div>
+      </div>
+      <div class="risk-card" style="border-left-color:var(--accent3);">
+        <div class="risk-header">
+          <div class="risk-title">Energieverbruik</div>
+          <span class="badge badge-cyan risk-level">Groeiend probleem</span>
+        </div>
+        <div class="risk-desc">GPT-4 trainen verbruikte ~50 GWh. Data centers voor AI verbruiken in 2026 meer elektriciteit dan landen als Nederland. Duurzaamheid is een kritieke uitdaging.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Accordion: regulering -->
+  <div class="reveal">
+    <h3 style="margin-bottom:1.5rem;font-size:1.2rem;">Regulering &amp; Governance</h3>
+    <div class="accordion-item">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        <span>🇪🇺 EU AI Act — In werking</span><span class="accordion-arrow">▼</span>
+      </button>
+      <div class="accordion-body">
+        De EU AI Act is de eerste uitgebreide AI-wetgeving ter wereld. Systemen worden geclassificeerd op risiconiveau. High-risk systemen (bijv. in onderwijs, zorg, justitie) vereisen conformiteitsbeoordelingen. General Purpose AI (GPAI) modellen zoals GPT en Claude vallen onder aanvullende transparantieverplichtingen. Volledig van kracht per 2026.
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        <span>🇺🇸 Executive Orders &amp; US Beleid</span><span class="accordion-arrow">▼</span>
+      </button>
+      <div class="accordion-body">
+        President Biden's Executive Order on AI (2023) verplichtte veiligheidsrapporten voor frontier-modellen. Onder Trump (2025) is het beleid verschoven naar AI-dominantie en deregulering. NIST AI Risk Management Framework biedt vrijwillige richtlijnen voor bedrijven.
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        <span>🌍 Internationaal: Bletchley Declaration</span><span class="accordion-arrow">▼</span>
+      </button>
+      <div class="accordion-body">
+        In 2023 ondertekenden 28 landen de Bletchley Declaration: de eerste internationale overeenkomst over frontier-AI veiligheid. AI Safety Institutes worden opgericht in de VS, VK, Japan en EU om frontier-modellen te evalueren op gevaarlijke capaciteiten.
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        <span>🏢 Zelfregulering door Big Tech</span><span class="accordion-arrow">▼</span>
+      </button>
+      <div class="accordion-body">
+        OpenAI, Anthropic, Google, Meta en Microsoft commiteerden zich aan vrijwillige veiligheidsbeloften via het Witte Huis. Frontier Model Forum coördineert veiligheidsonderzoek. Constitutional AI (Anthropic) en RLHF zijn standaard geworden voor veiliger gedrag.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Future Outlook -->
+<section id="future">
+  <div class="reveal">
+    <div class="section-label">Vooruitblik</div>
+    <h2 class="section-title">Wat Verwachten We?</h2>
+    <p class="section-desc">De komende jaren beloven een versnelling van AI-capaciteiten. Dit zijn de meest besproken scenario's.</p>
+  </div>
+  <div class="card-grid cols-3 reveal">
+    <div class="card" style="border-color:rgba(99,102,241,.3)">
+      <div class="card-icon">🤖</div>
+      <h3>AGI Tijdlijn — Debat</h3>
+      <p>Sam Altman: "AGI binnen enkele jaren". Geoffrey Hinton: "10 jaar". Yann LeCun: "AGI zoals in sci-fi is onhaalbaar met huidige architecturen". Het debat is volop gaande.</p>
+    </div>
+    <div class="card" style="border-color:rgba(6,182,212,.3)">
+      <div class="card-icon">🔬</div>
+      <h3>Wetenschappelijke Doorbraken</h3>
+      <p>AlphaFold 3 heeft eiwit-structuurvouwen grotendeels opgelost. AI ontdekt al nieuwe antibiotica en materialenwetenschappelijke verbindingen. Geneesmiddelenonderzoek wordt fundamenteel veranderd.</p>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.3)">
+      <div class="card-icon">🌐</div>
+      <h3>AI-gedreven Economie</h3>
+      <p>McKinsey schat dat generatieve AI $2,6–4,4 biljoen per jaar kan toevoegen aan de wereldeconomie. Productiviteitswinst in kenniswerk kan 30–50% zijn voor vroege adopters.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Quiz -->
+<section id="quiz">
+  <div class="reveal">
+    <div class="section-label">Interactief</div>
+    <h2 class="section-title">Test Je Kennis</h2>
+    <p class="section-desc">Hoe goed ken jij de stand van AI? Beantwoord deze vragen en ontdek het!</p>
+  </div>
+  <div class="quiz-container reveal" id="quizContainer">
+    <div class="quiz-question" id="quizQuestion"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <div class="quiz-nav">
+      <div class="quiz-score" id="quizScore">Vraag 1 van 7</div>
+      <div style="display:flex;gap:.75rem;">
+        <button class="btn btn-primary" id="quizNextBtn" onclick="nextQuestion()" style="display:none;">Volgende →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div style="max-width:600px;margin:0 auto;">
+    <div style="font-size:1.5rem;margin-bottom:1rem;">🤖</div>
+    <div style="font-weight:700;font-size:1.1rem;margin-bottom:.5rem;">AI in 2026 — Presentatie</div>
+    <div>Data gebaseerd op publiek beschikbare benchmarks, rapporten van IMF, McKinsey, Goldman Sachs, en persberichten van AI-labs.</div>
+    <div style="margin-top:1.5rem;font-size:.75rem;">Gemaakt als interactieve presentatie • Maart 2026</div>
+  </div>
+</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const models = [
+  { name:'Claude 3.5 / 4', maker:'Anthropic', type:'text', strength:'Analyse & Veiligheid', mmlu:90.4, status:'Actief', statusType:'green' },
+  { name:'GPT-4o / GPT-5', maker:'OpenAI', type:'text', strength:'Veelzijdigheid', mmlu:88.7, status:'Actief', statusType:'green' },
+  { name:'Gemini 2.0 Ultra', maker:'Google DeepMind', type:'text', strength:'Multimodaal', mmlu:90.0, status:'Actief', statusType:'green' },
+  { name:'Llama 3 (405B)', maker:'Meta', type:'text', strength:'Open Source', mmlu:87.3, status:'Open Source', statusType:'blue' },
+  { name:'Grok-2', maker:'xAI', type:'text', strength:'Real-time data', mmlu:87.5, status:'Actief', statusType:'green' },
+  { name:'Mistral Large 2', maker:'Mistral AI', type:'text', strength:'Efficiëntie', mmlu:84.0, status:'Open Source', statusType:'blue' },
+  { name:'DALL·E 3 / Sora', maker:'OpenAI', type:'image', strength:'Fotorealisme', mmlu:null, status:'Actief', statusType:'green' },
+  { name:'Midjourney v7', maker:'Midjourney', type:'image', strength:'Artistieke kwaliteit', mmlu:null, status:'Actief', statusType:'green' },
+  { name:'Stable Diffusion 3', maker:'Stability AI', type:'image', strength:'Open & Flexibel', mmlu:null, status:'Open Source', statusType:'blue' },
+  { name:'Kling / Sora / Veo', maker:'Kuaishou / OpenAI / Google', type:'video', strength:'Video generatie', mmlu:null, status:'Actief', statusType:'green' },
+  { name:'Devin / GitHub Copilot', maker:'Cognition / GitHub', type:'code', strength:'Autonoom coderen', mmlu:null, status:'Actief', statusType:'green' },
+  { name:'AlphaFold 3', maker:'Google DeepMind', type:'code', strength:'Eiwitstructuur', mmlu:null, status:'Actief', statusType:'cyan' },
+];
+
+const sectors = [
+  { icon:'🏥', title:'Gezondheidszorg', subtitle:'Diagnostiek & Drug Discovery', desc:'AI detecteert kanker op scans met hogere nauwkeurigheid dan radiologen. AlphaFold 3 versnelt medicijnontwikkeling drastisch. Administratieve last voor artsen daalt met 30%.', metric:'Diagnose-nauwkeurigheid', pct:85, color:'#10b981' },
+  { icon:'🎓', title:'Onderwijs', subtitle:'Personalisatie & Toegankelijkheid', desc:'Khan Academy\'s Khanmigo biedt elke leerling een persoonlijke tutor. AI-studieassistenten helpen bij essays, wiskunde en talen. Leraren gebruiken AI voor lesvoorbereiding.', metric:'Adoptie in onderwijs', pct:62, color:'#6366f1' },
+  { icon:'⚖️', title:'Juridisch', subtitle:'Research & Documentanalyse', desc:'Harvey AI en Clio verwerken jurisprudentie in seconden. Contract-review dat uren kostte duurt nu minuten. Toch: juridisch redeneren en ethiek blijven menselijk domein.', metric:'Tijdsbesparing op research', pct:70, color:'#8b5cf6' },
+  { icon:'💰', title:'Financiën', subtitle:'Analyse & Fraudedetectie', desc:'Bloomberg GPT en FinGPT begrijpen financieel nieuws. Algoritmische trading gebruikt AI voor microseconde-beslissingen. Fraude-detectie verbeterde met 40% door patroonherkenning.', metric:'Fraudedetectie verbetering', pct:40, color:'#f59e0b' },
+  { icon:'🏭', title:'Industrie & Logistiek', subtitle:'Automatisering & Optimalisatie', desc:'Siemens en GE integreren AI in voorspellend onderhoud. Amazon\'s warehouses gebruiken duizenden AI-robots. Supply chain-optimalisatie bespaart miljarden in kosten.', metric:'Efficiëntieverbetering', pct:55, color:'#06b6d4' },
+  { icon:'🎨', title:'Creative Industries', subtitle:'Kunst, Media & Entertainment', desc:'Adobe Firefly, Runway Gen-3 en Suno revolutioneren content creatie. Hollywood gebruikt AI voor VFX, scripts en post-productie. Auteursrecht en creatief eigendom zijn heet debat.', metric:'AI-gebruik bij creatieven', pct:78, color:'#ef4444' },
+];
+
+const quizData = [
+  { q:'Hoeveel parameters heeft het grootste bekende taalmodel (2025-2026)?', opts:['175 miljard','1 biljoen+','500 miljard','50 miljard'], correct:1, explain:'Frontier-modellen zoals GPT-4 en zijn opvolgers worden geschat op meer dan 1 biljoen parameters, hoewel exacte cijfers geheim blijven.' },
+  { q:'Welke architectuur ligt aan de basis van vrijwel alle moderne taalmodellen?', opts:['Recurrent Neural Network (RNN)','Convolutional Network (CNN)','Transformer (Attention)','Generative Adversarial Network (GAN)'], correct:2, explain:'"Attention is All You Need" (Google, 2017) introduceerde de Transformer, de basis van GPT, Claude, Gemini en vrijwel alle andere moderne AI-modellen.' },
+  { q:'Welk bedrijf maakte ChatGPT?', opts:['Google','Meta','Microsoft','OpenAI'], correct:3, explain:'ChatGPT werd in november 2022 gelanceerd door OpenAI. Microsoft investeerde 13 miljard dollar in OpenAI en integreert AI in Office en Bing.' },
+  { q:'Wat is RLHF?', opts:['Een programmeertaal voor AI','Reinforcement Learning from Human Feedback','Remote Learning for High-frequency trading','Real-time Language Handling Framework'], correct:1, explain:'RLHF is de techniek waarbij mensen AI-outputs beoordelen om het model te trainen nuttiger en veiliger te zijn. Het is de kern van ChatGPT en Claude.' },
+  { q:'Wat heeft AlphaFold van DeepMind opgelost?', opts:['Schaken op menselijk niveau','Het eiwitvouwingsprobleem','Autonome auto\'s','Klimaatmodellering'], correct:1, explain:'AlphaFold loste het 50 jaar oude eiwitvouwingsprobleem op — het voorspellen van 3D-structuur van eiwitten op basis van aminozuursequenties. Dit versnelt medicijnontwikkeling enorm.' },
+  { q:'Welke wetgeving is de eerste uitgebreide AI-regelgeving ter wereld?', opts:['US AI Safety Act','EU AI Act','UK Online Safety Bill','China AI Regulation 2023'], correct:1, explain:'De EU AI Act, van kracht in 2024-2026, is de eerste omvattende AI-wetgeving. Systemen worden ingedeeld naar risiconiveau met bijbehorende verplichtingen.' },
+  { q:'Hoeveel gebruikers bereikte ChatGPT in 2 maanden — het snelst ooit voor een consumentenapp?', opts:['10 miljoen','50 miljoen','100 miljoen','500 miljoen'], correct:2, explain:'ChatGPT bereikte 100 miljoen gebruikers in slechts 2 maanden. Ter vergelijking: Instagram deed er 2,5 jaar over, TikTok 9 maanden.' },
+];
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+let quizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+  createFloatingDots();
+  initNeuralCanvas();
+  renderModels('all');
+  renderBenchmarkChart();
+  renderSectors();
+  loadQuizQuestion();
+  initScrollReveal();
+  initCounters();
+});
+
+// ── FLOATING DOTS ────────────────────────────────────────────────────────
+function createFloatingDots() {
+  const container = document.getElementById('floatingBg');
+  for (let i = 0; i < 8; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'floating-dot';
+    const size = Math.random() * 300 + 100;
+    dot.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      animation-duration:${Math.random()*10+8}s;
+      animation-delay:-${Math.random()*10}s;
+      opacity:${Math.random()*.15+.05};
+    `;
+    container.appendChild(dot);
+  }
+}
+
+// ── NEURAL CANVAS ────────────────────────────────────────────────────────
+function initNeuralCanvas() {
+  const canvas = document.getElementById('neuralCanvas');
+  const ctx = canvas.getContext('2d');
+  let nodes = [], animId;
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    nodes = Array.from({length: 60}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - .5) * .4,
+      vy: (Math.random() - .5) * .4,
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+      if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+    });
+    nodes.forEach((a, i) => {
+      nodes.slice(i+1).forEach(b => {
+        const d = Math.hypot(a.x-b.x, a.y-b.y);
+        if (d < 120) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(99,102,241,${(1-d/120)*.4})`;
+          ctx.lineWidth = .5;
+          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      });
+      ctx.beginPath();
+      ctx.arc(a.x, a.y, 2, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(99,102,241,.5)';
+      ctx.fill();
+    });
+    animId = requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  draw();
+}
+
+// ── MODELS TABLE ─────────────────────────────────────────────────────────
+function renderModels(filter) {
+  const filtered = filter === 'all' ? models : models.filter(m => m.type === filter);
+  const tbody = document.getElementById('modelBody');
+  tbody.innerHTML = filtered.map(m => `
+    <tr>
+      <td style="font-weight:600">${m.name}</td>
+      <td style="color:var(--muted)">${m.maker}</td>
+      <td><span class="badge badge-blue">${m.type}</span></td>
+      <td style="color:var(--muted)">${m.strength}</td>
+      <td style="font-weight:700;color:var(--accent3)">${m.mmlu ? m.mmlu+'%' : '—'}</td>
+      <td><span class="badge badge-${m.statusType}">${m.status}</span></td>
+    </tr>
+  `).join('');
+
+  document.querySelectorAll('#modelTabs .tab-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase() === filter ||
+      (filter === 'all' && b.textContent === 'Alle'));
+  });
+}
+
+function switchTab(t) { renderModels(t); }
+
+// ── BENCHMARK CHART ───────────────────────────────────────────────────────
+function renderBenchmarkChart() {
+  const data = [
+    { label:'Claude\n3.5', val:90.4 },
+    { label:'Gemini\n2.0', val:90.0 },
+    { label:'GPT-4o', val:88.7 },
+    { label:'Grok-2', val:87.5 },
+    { label:'Llama\n3-405B', val:87.3 },
+    { label:'Mistral\nLarge 2', val:84.0 },
+    { label:'Menselijk\ngemiddelde', val:60.0 },
+  ];
+  const chart = document.getElementById('benchmarkChart');
+  const maxVal = 100;
+  chart.innerHTML = data.map((d, i) => `
+    <div class="bar-col">
+      <div class="bar-val">${d.val}%</div>
+      <div class="bar-fill" data-height="${(d.val/maxVal)*180}"
+        style="background:${i === data.length-1 ? 'linear-gradient(to top,#475569,#64748b)' : 'linear-gradient(to top,var(--accent),var(--accent2))'}">
+      </div>
+      <div class="bar-label">${d.label}</div>
+    </div>
+  `).join('');
+
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(el => {
+      el.style.height = el.dataset.height + 'px';
+    });
+  }, 300);
+}
+
+// ── SECTORS ───────────────────────────────────────────────────────────────
+function renderSectors() {
+  const grid = document.getElementById('sectorsGrid');
+  grid.innerHTML = sectors.map(s => `
+    <div class="sector-card" onclick="this.classList.toggle('expanded')">
+      <div class="sector-header">
+        <div class="sector-icon">${s.icon}</div>
+        <div>
+          <div class="sector-title">${s.title}</div>
+          <div class="sector-subtitle">${s.subtitle}</div>
+        </div>
+      </div>
+      <div class="sector-body">${s.desc}</div>
+      <div class="sector-metric">
+        <div class="sector-metric-label">${s.metric}: ${s.pct}%</div>
+        <div class="sector-bar">
+          <div class="sector-bar-fill" data-width="${s.pct}" style="background:${s.color}"></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  setTimeout(() => {
+    document.querySelectorAll('.sector-bar-fill').forEach(el => {
+      el.style.width = el.dataset.width + '%';
+    });
+  }, 600);
+}
+
+// ── CAPABILITIES TABS ─────────────────────────────────────────────────────
+function switchCapTab(t) {
+  document.querySelectorAll('#capTabs .tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && t === 'performance') || (i === 1 && t === 'skills'));
+  });
+  document.getElementById('cap-performance').classList.toggle('active', t === 'performance');
+  document.getElementById('cap-skills').classList.toggle('active', t === 'skills');
+  if (t === 'performance') animateProgressBars();
+}
+
+function animateProgressBars() {
+  setTimeout(() => {
+    document.querySelectorAll('.progress-fill').forEach(el => {
+      el.style.width = el.dataset.width + '%';
+    });
+  }, 100);
+}
+
+// ── ACCORDION ─────────────────────────────────────────────────────────────
+function toggleAccordion(btn) {
+  btn.classList.toggle('open');
+  const body = btn.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// ── QUIZ ──────────────────────────────────────────────────────────────────
+function loadQuizQuestion() {
+  answered = false;
+  const q = quizData[quizIndex];
+  document.getElementById('quizQuestion').textContent = `${quizIndex+1}. ${q.q}`;
+  document.getElementById('quizOptions').innerHTML = q.opts.map((o, i) => `
+    <div class="quiz-option" onclick="answerQuiz(this, ${i})">${o}</div>
+  `).join('');
+  document.getElementById('quizFeedback').className = 'quiz-feedback';
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizNextBtn').style.display = 'none';
+  document.getElementById('quizScore').textContent = `Vraag ${quizIndex+1} van ${quizData.length}`;
+}
+
+function answerQuiz(el, idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach(o => o.classList.add('disabled'));
+  opts[q.correct].classList.add('correct');
+  if (idx !== q.correct) el.classList.add('wrong');
+  else quizScore++;
+
+  const fb = document.getElementById('quizFeedback');
+  fb.textContent = (idx === q.correct ? '✅ Correct! ' : '❌ Niet correct. ') + q.explain;
+  fb.className = `quiz-feedback show ${idx === q.correct ? 'good' : 'bad'}`;
+  document.getElementById('quizNextBtn').style.display = 'block';
+  if (quizIndex === quizData.length - 1) {
+    document.getElementById('quizNextBtn').textContent = 'Resultaat bekijken';
+  }
+}
+
+function nextQuestion() {
+  quizIndex++;
+  if (quizIndex >= quizData.length) {
+    const pct = Math.round((quizScore / quizData.length) * 100);
+    const emoji = pct >= 80 ? '🏆' : pct >= 50 ? '👍' : '📚';
+    document.getElementById('quizContainer').innerHTML = `
+      <div style="text-align:center;padding:2rem;">
+        <div style="font-size:4rem;margin-bottom:1rem">${emoji}</div>
+        <h3 style="font-size:1.8rem;margin-bottom:.5rem">${quizScore} / ${quizData.length} correct</h3>
+        <p style="color:var(--muted);margin-bottom:2rem">${pct >= 80 ? 'Uitstekend! Je weet veel over AI.' : pct >= 50 ? 'Goed gedaan! Je kent de basis.' : 'Interessant! Veel te ontdekken over AI.'}</p>
+        <div style="font-size:3rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${pct}%</div>
+        <button class="btn btn-primary" style="margin-top:2rem;" onclick="resetQuiz()">Opnieuw proberen</button>
+      </div>
+    `;
+    return;
+  }
+  loadQuizQuestion();
+}
+
+function resetQuiz() {
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quizContainer').innerHTML = `
+    <div class="quiz-question" id="quizQuestion"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <div class="quiz-nav">
+      <div class="quiz-score" id="quizScore">Vraag 1 van 7</div>
+      <div style="display:flex;gap:.75rem;">
+        <button class="btn btn-primary" id="quizNextBtn" onclick="nextQuestion()" style="display:none;">Volgende →</button>
+      </div>
+    </div>
+  `;
+  loadQuizQuestion();
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        if (e.target.querySelector('.progress-fill')) animateProgressBars();
+        if (e.target.querySelector('.sector-bar-fill')) {
+          setTimeout(() => {
+            e.target.querySelectorAll('.sector-bar-fill').forEach(el => {
+              el.style.width = el.dataset.width + '%';
+            });
+          }, 300);
+        }
+        if (e.target.querySelector('.bar-fill')) {
+          setTimeout(() => {
+            e.target.querySelectorAll('.bar-fill').forEach(el => {
+              el.style.height = el.dataset.height + 'px';
+            });
+          }, 200);
+        }
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ── COUNTERS ──────────────────────────────────────────────────────────────
+function initCounters() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = parseInt(el.dataset.target);
+        let current = 0;
+        const step = target / 60;
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = Math.floor(current).toLocaleString('nl-NL');
+          if (current >= target) clearInterval(timer);
+        }, 25);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.counter').forEach(el => observer.observe(el));
+}
+</script>
+</body>
+</html>
